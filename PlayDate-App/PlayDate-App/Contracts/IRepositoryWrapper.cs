@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 
 namespace PlayDate_App.Contracts
 {
-    interface IRepositoryWrapper
+    public interface IRepositoryWrapper
     {
+        IParentRepository Parent { get; }
+        IKidRepository Kid { get; }
+        void Save();
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PlayDate_App.ActionFilters;
+using PlayDate_App.Contracts;
 using PlayDate_App.Data;
 using System;
 using System.Collections.Generic;
@@ -38,12 +39,14 @@ namespace PlayDate_App
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
             services.AddScoped<ClaimsPrincipal>(s =>s.GetService<IHttpContextAccessor>().HttpContext.User);
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddControllers(config =>
             {
                 config.Filters.Add(typeof(GlobalRouting));
             });
             services.AddControllersWithViews();
             services.AddRazorPages();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
