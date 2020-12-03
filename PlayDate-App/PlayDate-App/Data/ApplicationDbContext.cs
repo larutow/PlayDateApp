@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PlayDate_App.Models;
 using System;
@@ -13,8 +14,23 @@ namespace PlayDate_App.Data
             : base(options)
         {
         }
+<<<<<<< HEAD
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<IdentityRole>()
+            .HasData(
+            new IdentityRole
+            {
+                Name = "Parent",
+                NormalizedName = "PARENT"
+            }
+            );
+        }
+=======
 
         public DbSet<Parent> Parents { get; set; }
         public DbSet<Kid> Kids { get; set; }
+>>>>>>> 75d92ec7156e0d28d03d97b997bc240edf644a36
     }
 }
