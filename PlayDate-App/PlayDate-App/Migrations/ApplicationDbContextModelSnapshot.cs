@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlayDate_App.Data;
 
-namespace PlayDate_App.Data.Migrations
+namespace PlayDate_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -15,11 +15,7 @@ namespace PlayDate_App.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-<<<<<<< HEAD
                 .HasAnnotation("ProductVersion", "3.1.10")
-=======
-                .HasAnnotation("ProductVersion", "3.1.8")
->>>>>>> 75d92ec7156e0d28d03d97b997bc240edf644a36
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -52,8 +48,8 @@ namespace PlayDate_App.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c738e5aa-ce5c-4b70-8062-061522bc30e5",
-                            ConcurrencyStamp = "bed69d31-fec6-4c84-b803-407989ca64b0",
+                            Id = "81255b36-3ef9-4173-b0c7-45d2e6326a24",
+                            ConcurrencyStamp = "2b3d59cf-3b10-4769-ac79-92b585f3ce72",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });
@@ -276,6 +272,9 @@ namespace PlayDate_App.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
@@ -295,6 +294,8 @@ namespace PlayDate_App.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ParentId");
+
+                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("Parents");
                 });
@@ -348,6 +349,13 @@ namespace PlayDate_App.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PlayDate_App.Models.Parent", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
                 });
 #pragma warning restore 612, 618
         }

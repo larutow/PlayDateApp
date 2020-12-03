@@ -14,7 +14,6 @@ namespace PlayDate_App.Data
             : base(options)
         {
         }
-<<<<<<< HEAD
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -27,10 +26,8 @@ namespace PlayDate_App.Data
             }
             );
         }
-=======
-
         public DbSet<Parent> Parents { get; set; }
         public DbSet<Kid> Kids { get; set; }
->>>>>>> 75d92ec7156e0d28d03d97b997bc240edf644a36
+
     }
 }

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlayDate_App.Data;
 
-namespace PlayDate_App.Data.Migrations
+namespace PlayDate_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201203193012_Init")]
-    partial class Init
+    [Migration("20201203195956_nuked")]
+    partial class nuked
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,8 +50,8 @@ namespace PlayDate_App.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c738e5aa-ce5c-4b70-8062-061522bc30e5",
-                            ConcurrencyStamp = "bed69d31-fec6-4c84-b803-407989ca64b0",
+                            Id = "81255b36-3ef9-4173-b0c7-45d2e6326a24",
+                            ConcurrencyStamp = "2b3d59cf-3b10-4769-ac79-92b585f3ce72",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });
@@ -226,6 +226,82 @@ namespace PlayDate_App.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("PlayDate_App.Models.Kid", b =>
+                {
+                    b.Property<int>("KidId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Immunized")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("SpecialNeeds")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("WearsMask")
+                        .HasColumnType("bit");
+
+                    b.HasKey("KidId");
+
+                    b.ToTable("Kids");
+                });
+
+            modelBuilder.Entity("PlayDate_App.Models.Parent", b =>
+                {
+                    b.Property<int>("ParentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Lng")
+                        .HasColumnType("float");
+
+                    b.Property<int>("LocationZip")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ThumbsUp")
+                        .HasColumnType("int");
+
+                    b.HasKey("ParentId");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("Parents");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -275,6 +351,13 @@ namespace PlayDate_App.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PlayDate_App.Models.Parent", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
                 });
 #pragma warning restore 612, 618
         }

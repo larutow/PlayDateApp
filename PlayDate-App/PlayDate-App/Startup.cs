@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -7,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PlayDate_App.ActionFilters;
 using PlayDate_App.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace PlayDate_App
@@ -30,16 +33,15 @@ namespace PlayDate_App
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-<<<<<<< HEAD
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
-=======
-            
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
->>>>>>> 75d92ec7156e0d28d03d97b997bc240edf644a36
+            services.AddScoped<ClaimsPrincipal>(s =>s.GetService<IHttpContextAccessor>().HttpContext.User);
+            services.AddControllers(config =>
+            {
+                config.Filters.Add(typeof(GlobalRouting));
+            });
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
