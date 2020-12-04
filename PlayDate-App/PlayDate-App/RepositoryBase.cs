@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+
 namespace PlayDate_App
 {
     public abstract class RepositoryBase<T>:IRepositoryBase<T> where T:class
@@ -27,6 +28,7 @@ namespace PlayDate_App
         public void Create(T entity)
         {
             ApplicationDbContext.Set<T>().Add(entity);
+            
         }
         public void Update(T entity)
         {

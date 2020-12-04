@@ -5,6 +5,8 @@ using PlayDate_App.Models;
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
+
 
 namespace PlayDate_App.Controllers
 {
@@ -36,7 +38,9 @@ namespace PlayDate_App.Controllers
         // GET: ParentController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var parent = _repo.Parent.GetParentDetails(id);
+
+            return View(parent);
         }
 
         // GET: ParentController/Create
@@ -44,7 +48,7 @@ namespace PlayDate_App.Controllers
         {
             Parent parent = new Parent();
 
-            return View(parent);
+            return View();
         }
 
         //GET : ParentController/AddKid
@@ -76,7 +80,7 @@ namespace PlayDate_App.Controllers
             {
                 _repo.Parent.Create(parent);
                 _repo.Save();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { parent.ParentId });
             }
             catch
             {

@@ -10,5 +10,7 @@ namespace PlayDate_App.Contracts
     {
         Parent GetParent(string parentUserId);
 
+        Parent GetParentDetails(int id);
+
     }
 }
