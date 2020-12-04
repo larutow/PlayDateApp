@@ -32,7 +32,7 @@ namespace PlayDate_App.Controllers
 
             //TODO index view logic - home screen
 
-            return View();
+            return View(parent);
         }
 
         // GET: ParentController/Details/5
@@ -47,8 +47,7 @@ namespace PlayDate_App.Controllers
         public ActionResult Create()
         {
             Parent parent = new Parent();
-
-            return View();
+            return View(parent);
         }
 
         //GET : ParentController/AddKid
@@ -78,9 +77,10 @@ namespace PlayDate_App.Controllers
         {
             try
             {
+                parent.IdentityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 _repo.Parent.Create(parent);
                 _repo.Save();
-                return RedirectToAction("Details", new { parent.ParentId });
+                return RedirectToAction("Index");
             }
             catch
             {
