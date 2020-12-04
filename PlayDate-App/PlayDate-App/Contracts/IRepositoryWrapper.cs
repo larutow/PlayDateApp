@@ -9,6 +9,11 @@ namespace PlayDate_App.Contracts
     {
         IParentRepository Parent { get; }
         IKidRepository Kid { get; }
+        IEventRepository Event { get; }
+        IEventRegistrationRepository EventRegistration { get; }
+        ILocationRepository Location { get; }
+        IFriendshipRepository Friendship { get; }
+
         void Save();
     }
 }
