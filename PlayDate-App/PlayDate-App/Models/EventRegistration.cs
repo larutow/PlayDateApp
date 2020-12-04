@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 
 namespace PlayDate_App.Models
 {
-    public class EventRegistrations
+    public class EventRegistration
     {
         [Key]
-        public int EventRegistryId { get; set; }
+        public int EventRegistrationId { get; set; }
 
         [ForeignKey("Parent")]
         public int ParentId { get; set; }
+        public Parent Parent { get; set; }
 
         [ForeignKey("Event")]
         public int EventId { get; set; }
-        public Parent Parent { get; set; }
+        public Event Event { get; set; }
 
         public bool Accepted { get; set; }
 

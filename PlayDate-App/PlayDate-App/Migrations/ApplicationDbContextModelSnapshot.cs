@@ -48,8 +48,8 @@ namespace PlayDate_App.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "81255b36-3ef9-4173-b0c7-45d2e6326a24",
-                            ConcurrencyStamp = "2b3d59cf-3b10-4769-ac79-92b585f3ce72",
+                            Id = "b7387a70-5e23-4917-bf5a-395331044f6b",
+                            ConcurrencyStamp = "95e80ae6-b069-4edd-9a04-6b25e0f4233b",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });
@@ -224,6 +224,95 @@ namespace PlayDate_App.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("PlayDate_App.Models.Event", b =>
+                {
+                    b.Property<int>("EventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("ConfirmedEvent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeAndDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("EventId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("PlayDate_App.Models.EventRegistration", b =>
+                {
+                    b.Property<int>("EventRegistrationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ConfirmedAttendance")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EventRegistrationId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("EventRegistrations");
+                });
+
+            modelBuilder.Entity("PlayDate_App.Models.Friendship", b =>
+                {
+                    b.Property<int>("FriendshipId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("FriendshipConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FriendshipRequest")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ParentOneId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParentTwoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FriendshipId");
+
+                    b.HasIndex("ParentOneId");
+
+                    b.HasIndex("ParentTwoId");
+
+                    b.ToTable("Friendships");
+                });
+
             modelBuilder.Entity("PlayDate_App.Models.Kid", b =>
                 {
                     b.Property<int>("KidId")
@@ -256,6 +345,30 @@ namespace PlayDate_App.Migrations
                     b.HasKey("KidId");
 
                     b.ToTable("Kids");
+                });
+
+            modelBuilder.Entity("PlayDate_App.Models.Location", b =>
+                {
+                    b.Property<int>("LocationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Lng")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ThumbsUp")
+                        .HasColumnType("int");
+
+                    b.HasKey("LocationId");
+
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("PlayDate_App.Models.Parent", b =>
@@ -351,11 +464,51 @@ namespace PlayDate_App.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PlayDate_App.Models.Event", b =>
+                {
+                    b.HasOne("PlayDate_App.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PlayDate_App.Models.EventRegistration", b =>
+                {
+                    b.HasOne("PlayDate_App.Models.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PlayDate_App.Models.Parent", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PlayDate_App.Models.Friendship", b =>
+                {
+                    b.HasOne("PlayDate_App.Models.Parent", "ParentOne")
+                        .WithMany()
+                        .HasForeignKey("ParentOneId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PlayDate_App.Models.Parent", "ParentTwo")
+                        .WithMany()
+                        .HasForeignKey("ParentTwoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PlayDate_App.Models.Parent", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
-                        .HasForeignKey("IdentityUserId");
+                        .HasForeignKey("IdentityUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

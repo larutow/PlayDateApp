@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace PlayDate_App.Models
 {
-    public class Friendships
+    public class Friendship
     {
         [Key]
-        public int FriendshipsId { get; set; }
+        public int FriendshipId { get; set; }
         [ForeignKey("Parent")]
-        public int ParentOne { get; set; }
+        public int ParentOneId { get; set; }
+        public Parent ParentOne { get; set; }
         [ForeignKey("Parent")]
-        public int ParentTwo { get; set; }
+        public int ParentTwoId { get; set; }
+        public Parent ParentTwo { get; set; }
         public bool FriendshipRequest { get; set; } 
         public bool FriendshipConfirmed { get; set; }
         

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PlayDate_App.Migrations
 {
-    public partial class nuked : Migration
+    public partial class nuke3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -63,6 +63,22 @@ namespace PlayDate_App.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Kids", x => x.KidId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    LocationId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Lat = table.Column<double>(nullable: false),
+                    Lng = table.Column<double>(nullable: false),
+                    ThumbsUp = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.LocationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,10 +214,90 @@ namespace PlayDate_App.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    EventId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LocationId = table.Column<int>(nullable: false),
+                    TimeAndDate = table.Column<DateTime>(nullable: false),
+                    ConfirmedEvent = table.Column<bool>(nullable: false),
+                    IsPrivate = table.Column<bool>(nullable: false),
+                    Capacity = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.EventId);
+                    table.ForeignKey(
+                        name: "FK_Events_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Friendships",
+                columns: table => new
+                {
+                    FriendshipId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ParentOneId = table.Column<int>(nullable: false),
+                    ParentTwoId = table.Column<int>(nullable: false),
+                    FriendshipRequest = table.Column<bool>(nullable: false),
+                    FriendshipConfirmed = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Friendships", x => x.FriendshipId);
+                    table.ForeignKey(
+                        name: "FK_Friendships_Parents_ParentOneId",
+                        column: x => x.ParentOneId,
+                        principalTable: "Parents",
+                        principalColumn: "ParentId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Friendships_Parents_ParentTwoId",
+                        column: x => x.ParentTwoId,
+                        principalTable: "Parents",
+                        principalColumn: "ParentId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventRegistrations",
+                columns: table => new
+                {
+                    EventRegistrationId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ParentId = table.Column<int>(nullable: false),
+                    EventId = table.Column<int>(nullable: false),
+                    Accepted = table.Column<bool>(nullable: false),
+                    Role = table.Column<string>(nullable: false),
+                    ConfirmedAttendance = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventRegistrations", x => x.EventRegistrationId);
+                    table.ForeignKey(
+                        name: "FK_EventRegistrations_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "EventId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EventRegistrations_Parents_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Parents",
+                        principalColumn: "ParentId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "81255b36-3ef9-4173-b0c7-45d2e6326a24", "2b3d59cf-3b10-4769-ac79-92b585f3ce72", "Parent", "PARENT" });
+                values: new object[] { "b7387a70-5e23-4917-bf5a-395331044f6b", "95e80ae6-b069-4edd-9a04-6b25e0f4233b", "Parent", "PARENT" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -243,6 +339,31 @@ namespace PlayDate_App.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EventRegistrations_EventId",
+                table: "EventRegistrations",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventRegistrations_ParentId",
+                table: "EventRegistrations",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_LocationId",
+                table: "Events",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Friendships_ParentOneId",
+                table: "Friendships",
+                column: "ParentOneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Friendships_ParentTwoId",
+                table: "Friendships",
+                column: "ParentTwoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Parents_IdentityUserId",
                 table: "Parents",
                 column: "IdentityUserId");
@@ -266,13 +387,25 @@ namespace PlayDate_App.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "EventRegistrations");
+
+            migrationBuilder.DropTable(
+                name: "Friendships");
+
+            migrationBuilder.DropTable(
                 name: "Kids");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Parents");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
