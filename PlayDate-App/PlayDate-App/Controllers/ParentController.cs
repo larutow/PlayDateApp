@@ -46,6 +46,15 @@ namespace PlayDate_App.Controllers
             return View(parent);
         }
 
+        //GET : ParentController/AddKid
+        public ActionResult AddKid()
+        {
+            Kid kid = new Kid();
+            var parent = _repo.Parent.GetParent(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            kid.ParentId = parent.ParentId;
+            return View(kid);
+        }
+
         // POST: ParentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
