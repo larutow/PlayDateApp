@@ -28,6 +28,7 @@ namespace PlayDate_App.Data
         }
         public DbSet<Parent> Parents { get; set; }
         public DbSet<Kid> Kids { get; set; }
+        public DbSet<Friendships> Friendships { get; set; }
 
     }
 }
