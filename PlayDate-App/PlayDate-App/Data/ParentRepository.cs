@@ -14,5 +14,9 @@ namespace PlayDate_App.Data
         {
 
         }
+
+        public Parent GetParent(string parentUserId) => FindByCondition(p => p.IdentityUserId == parentUserId).FirstOrDefault();
+
+
     }
 }

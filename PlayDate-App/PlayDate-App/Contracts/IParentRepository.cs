@@ -8,5 +8,7 @@ namespace PlayDate_App.Contracts
 {
     public interface IParentRepository: IRepositoryBase<Parent>
     {
+        Parent GetParent(string parentUserId);
+
     }
 }

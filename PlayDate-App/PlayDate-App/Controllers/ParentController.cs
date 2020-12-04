@@ -2,32 +2,32 @@
 using Microsoft.AspNetCore.Mvc;
 using PlayDate_App.Contracts;
 using PlayDate_App.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace PlayDate_App.Controllers
 {
     public class ParentController : Controller
     {
         private IRepositoryWrapper _repo;
+
         public ParentController(IRepositoryWrapper repo)
         {
             _repo = repo;
         }
+
         // GET: ParentController
         public ActionResult Index()
         {
             var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var parent = _repo.Parent.FindByCondition(p => p.IdentityUserId == identityUserId).FirstOrDefault();
-            if(parent == null)
+            //var parent = _repo.Parent.FindByCondition(p => p.IdentityUserId == identityUserId).FirstOrDefault();
+            var parent = _repo.Parent.GetParent(identityUserId);
+            if (parent == null)
             {
                 return RedirectToAction("Create");
             }
 
-            //index view logic - home screen
+            //TODO index view logic - home screen
 
             return View();
         }
@@ -49,10 +49,12 @@ namespace PlayDate_App.Controllers
         // POST: ParentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Parent parent)
         {
             try
             {
+                _repo.Parent.Create(parent);
+                _repo.Save();
                 return RedirectToAction(nameof(Index));
             }
             catch
