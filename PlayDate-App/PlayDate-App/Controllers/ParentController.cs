@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PlayDate_App.Contracts;
 using PlayDate_App.Models;
+using System;
 using System.Linq;
 using System.Security.Claims;
 
@@ -53,6 +54,17 @@ namespace PlayDate_App.Controllers
             var parent = _repo.Parent.GetParent(User.FindFirstValue(ClaimTypes.NameIdentifier));
             kid.ParentId = parent.ParentId;
             return View(kid);
+        }
+
+        //POST: ParentController/AddKid
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddKid(Kid addedkid)
+        {
+            _repo.Kid.Create(addedkid);
+            _repo.Save();
+            Console.WriteLine(addedkid);
+            return RedirectToAction("Index");
         }
 
         // POST: ParentController/Create
