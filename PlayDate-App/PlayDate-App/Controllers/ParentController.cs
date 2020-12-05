@@ -91,17 +91,21 @@ namespace PlayDate_App.Controllers
         // GET: ParentController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var parent = _repo.Parent.GetParentDetails(id);
+
+            return View(parent);
         }
 
         // POST: ParentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Parent parent)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _repo.Parent.Update(parent);
+                _repo.Save();
+                return RedirectToAction("Details");
             }
             catch
             {
