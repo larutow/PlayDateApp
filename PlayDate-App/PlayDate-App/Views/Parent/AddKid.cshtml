@@ -4,9 +4,9 @@
     ViewData["Title"] = "AddKid";
 }
 
-<h1>View</h1>
+<h1>Add Kid</h1>
 
-<h4>Kid</h4>
+<h6>Fill in the form below to add a child to your profile</h6>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -51,7 +51,8 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Details" asp-route-id="@Model.ParentId">Back to Profile</a> | 
+    <a asp-action="Index">Back to Home</a>
 </div>
 
 @section Scripts {

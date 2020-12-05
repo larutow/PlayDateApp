@@ -19,5 +19,7 @@ namespace PlayDate_App.Data
 
         public Parent GetParentDetails(int id) => FindByCondition(p => p.ParentId == id).FirstOrDefault();
 
+        //public Parent GetKids(int id) => FindByCondition(p => p.ParentId == id).Where(k => k.) // Find kids attached to parent
+
     }
 }
