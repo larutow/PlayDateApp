@@ -20,6 +20,7 @@ namespace PlayDate_App.Models
         [Required]
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string SpouseName { get; set; }
         public int LocationZip { get; set; }
         public string ImagePath { get; set; }
         public string EmailAddress { get; set; }

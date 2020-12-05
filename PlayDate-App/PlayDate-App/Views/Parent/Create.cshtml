@@ -40,6 +40,11 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="SpouseName" class="control-label">Last Name</label>
+                <input asp-for="SpouseName" class="form-control" />
+                <span asp-validation-for="SpouseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="LocationZip" class="control-label">Zip Code</label>
                 <input type="number" step="1" asp-for="LocationZip" class="form-control" pattern="\d{5}" maxlength="5" style="width: 100px" />
                 <span asp-validation-for="LocationZip" class="text-danger"></span>
