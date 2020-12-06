@@ -1,4 +1,4 @@
-﻿@model PlayDate_App.Models.Parent
+﻿@model PlayDate_App.Models.ParentIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -11,56 +11,80 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.Parent.FirstName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.Parent.FirstName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.Parent.LastName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
+            @Html.DisplayFor(model => model.Parent.LastName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LocationZip)
+            @Html.DisplayNameFor(model => model.Parent.LocationZip)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LocationZip)
+            @Html.DisplayFor(model => model.Parent.LocationZip)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImagePath)
+            @Html.DisplayNameFor(model => model.Parent.ImagePath)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImagePath)
+            @Html.DisplayFor(model => model.Parent.ImagePath)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmailAddress)
+            @Html.DisplayNameFor(model => model.Parent.EmailAddress)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmailAddress)
+            @Html.DisplayFor(model => model.Parent.EmailAddress)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lat)
+            @Html.DisplayNameFor(model => model.Parent.Lat)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lat)
+            @Html.DisplayFor(model => model.Parent.Lat)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lng)
+            @Html.DisplayNameFor(model => model.Parent.Lng)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lng)
+            @Html.DisplayFor(model => model.Parent.Lng)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ThumbsUp)
+            @Html.DisplayNameFor(model => model.Parent.ThumbsUp)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ThumbsUp)
+            @Html.DisplayFor(model => model.Parent.ThumbsUp)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Details" asp-route-id="@Model.ParentId">View Profile</a> 
+    
+    <form asp-controller="Parent" asp-action="SearchResults" method="post">
+        <input type="hidden" asp-for="Parent" />
+        <div class="form-group">
+            <label for="name" asp-for="NameSearch">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="First name OR Last name" asp-for="NameSearch">
+        </div>
+        <div class="form-group">
+            <label for="agelow" asp-for="AgeLow">Age (Lower)</label>
+            <input type="number" asp-for="AgeLow" class="form-control" id="agelow" placeholder="Age (Lower Bound)">
+        </div>
+        <div class="form-group">
+            <label for="agehigh" asp-for="AgeHigh">Hager (Upper)</label>
+            <input type="number" asp-for="AgeHigh" class="form-control" id="agehigh" placeholder="Age (Upper Bound)">
+        </div>
+        <div class="form-group">
+            <label for="location" asp-for="ZipSearch">Location (Zip Code)</label>
+            <input type="number" asp-for="ZipSearch" class="form-control" id="location" placeholder="12345">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+</div>
+<div>
+    <a asp-action="Details" asp-route-id="@Model.Parent.ParentId">View Profile</a> 
     @*<a asp-action="Index">Back to List</a>*@
 </div>

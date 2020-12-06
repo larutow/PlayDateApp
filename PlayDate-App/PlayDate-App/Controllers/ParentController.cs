@@ -30,9 +30,12 @@ namespace PlayDate_App.Controllers
                 return RedirectToAction("Create");
             }
 
+            ParentIndexViewModel indexViewModel = new ParentIndexViewModel();
+            indexViewModel.Parent = parent;
+
             //TODO index view logic - home screen
 
-            return View(parent);
+            return View(indexViewModel);
         }
 
         // GET: ParentController/Details/5
@@ -117,6 +120,19 @@ namespace PlayDate_App.Controllers
         // GET: ParentController/Delete/5
         public ActionResult Delete(int id)
         {
+            return View();
+        }
+
+        public ActionResult SearchResults(ParentIndexViewModel parentIndexView)
+        {
+            
+            //check boxes + text/input boxes
+            
+            //first name & last name
+            //use kid params
+            //age range
+            //location
+            
             return View();
         }
 
