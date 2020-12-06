@@ -62,8 +62,9 @@
 </div>
 <div>
     
-    <form asp-controller="Parent" asp-action="SearchResults" method="post">
-        <input type="hidden" asp-for="Parent" />
+    <form asp-action="SearchResults">
+        <input type="hidden" asp-for="Parent.IdentityUserId" />
+        <input type="hidden" asp-for="Parent.ParentId" />
         <div class="form-group">
             <label for="name" asp-for="NameSearch">Name</label>
             <input type="text" class="form-control" id="name" placeholder="First name OR Last name" asp-for="NameSearch">

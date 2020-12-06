@@ -123,9 +123,11 @@ namespace PlayDate_App.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SearchResults(ParentIndexViewModel parentIndexView)
         {
-            
+            var searchingParent = _repo.Parent.GetParent(parentIndexView.Parent.IdentityUserId);
             //check boxes + text/input boxes
             
             //first name & last name
