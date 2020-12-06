@@ -99,16 +99,14 @@ namespace PlayDate_App.Controllers
         // POST: ParentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Parent parent)
+        public ActionResult Edit(Parent parent)
         {
             try
             {
-                //var prt = _repo.Parent.GetParentDetails(id);
-                //_repo.Parent.Delete(prt);
-                //_repo.Parent.Create(parent);
+
                 _repo.Parent.Update(parent);
                 _repo.Save();
-                return RedirectToAction();
+                return RedirectToAction("Index");
             }
             catch
             {
