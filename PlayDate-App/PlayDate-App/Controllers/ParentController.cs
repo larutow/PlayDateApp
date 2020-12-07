@@ -231,9 +231,9 @@ namespace PlayDate_App.Controllers
                 newRequest.ParentTwoId = parentTwoId;
                 newRequest.FriendshipRequest = true;
                 newRequest.FriendshipConfirmed = false;
+                
 
-
-            }
+            }return View();
 
 
             //return DoParentIdsMatch.TrueForAll(ParentOneId.Contains) == ParentTwoId.TrueForAll(DoParentIdsMatch.Contains);
