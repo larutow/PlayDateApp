@@ -211,7 +211,7 @@ namespace PlayDate_App.Controllers
 
             AllFoundParents = AllFoundParents.GroupBy(p => p.ParentId).Select(p => p.Last()).ToList();
             //allfoundparents = list of found parent objects using search params
-            return View();
+            return View(AllFoundParents);
         }
 
         // POST: ParentController/Delete/5
