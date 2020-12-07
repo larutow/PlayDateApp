@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PlayDate_App.Contracts;
 using PlayDate_App.Models;
 using System;
@@ -129,43 +130,48 @@ namespace PlayDate_App.Controllers
         public ActionResult SearchResults(ParentIndexViewModel parentIndexView)
         {
             var searchingParent = _repo.Parent.GetParent(parentIndexView.Parent.IdentityUserId);
-            
+
+            List<Parent> AllParentsInZip = new List<Parent>();
+            List<Kid> AllFoundKidsInZip = new List<Kid>();
+
             List<Parent> AllFoundParents = new List<Parent>();
+            
+            //default behavior is zip searches for local zip code parents
+            
+            //search for parents by zip location
+            var foundByZip = _repo.Parent.FindByCondition(p => p.LocationZip == parentIndexView.ZipSearch).ToList();
+            AllParentsInZip.AddRange(foundByZip);
+            
 
 
-            //chunk off all of these queries into separate async methodsg?
+            //Find every kid in zip (use local parents)
+            foreach (Parent parent in AllParentsInZip)
+            {
+                var foundKidsOfParent = _repo.Kid.FindByCondition(k => k.ParentId == parent.ParentId).ToList();
+                AllFoundKidsInZip.AddRange(foundKidsOfParent);
+            }
+
+            
 
             //check name input - if not null perform search
             if (parentIndexView.NameSearch != null)
             {
                 //search for parents by first name and last name and build a list of distinct results
-                var foundByFirstName = _repo.Parent.FindByCondition(p => p.FirstName.Contains(parentIndexView.NameSearch)).ToList();
-                var foundByLastName = _repo.Parent.FindByCondition(p => p.LastName.Contains(parentIndexView.NameSearch)).ToList();
+                var foundByFirstName = AllParentsInZip.Where(p => p.FirstName.Contains(parentIndexView.NameSearch)).ToList();
+                var foundByLastName = AllParentsInZip.Where(p => p.LastName.Contains(parentIndexView.NameSearch)).ToList();
+                
                 var foundByName = foundByFirstName.Union(foundByLastName).ToList();
                 //add found parents by name to AllFoundParents
                 AllFoundParents.AddRange(foundByName);
             }
 
-            //location
-            if (parentIndexView.ZipSearch != null)
-            {
-                //search for parents by zip location
-                var foundByZip = _repo.Parent.FindByCondition(p => p.LocationZip == parentIndexView.ZipSearch).ToList();
-                AllFoundParents.AddRange(foundByZip);
-            }
-            else
-            {
-                //search locally? - perhaps this is a higher level filter above the rest? 
-            }
-            
-            //kid params
             //age range
             if (parentIndexView.AgeLow != null || parentIndexView.AgeHigh != null)
             {
                 List<Parent> foundParentsByKidAges = new List<Parent>();
                 if(parentIndexView.AgeLow != null)
                 {
-                    var foundKidsAboveLower = _repo.Kid.FindByCondition(k => k.Age >= parentIndexView.AgeLow);
+                    var foundKidsAboveLower = AllFoundKidsInZip.Where(k => k.Age >= parentIndexView.AgeLow);
                     foreach(Kid kid in foundKidsAboveLower)
                     {
                         var parent = _repo.Parent.GetParentDetails(kid.ParentId);
@@ -174,7 +180,7 @@ namespace PlayDate_App.Controllers
                 }
                 if (parentIndexView.AgeHigh != null)
                 {
-                    var foundKidsBelowUpper = _repo.Kid.FindByCondition(k => k.Age <= parentIndexView.AgeHigh);
+                    var foundKidsBelowUpper = AllFoundKidsInZip.Where(k => k.Age <= parentIndexView.AgeHigh);
                     foreach (Kid kid in foundKidsBelowUpper)
                     {
                         var parent = _repo.Parent.GetParentDetails(kid.ParentId);
@@ -185,7 +191,6 @@ namespace PlayDate_App.Controllers
                 
             }
 
-            
             //health - immunizations
             if (parentIndexView.ImmunizedSearch == true)
             {
@@ -209,10 +214,40 @@ namespace PlayDate_App.Controllers
 
             }
 
+            if(AllFoundParents.Count == 0)
+            {
+                AllFoundParents = AllParentsInZip;
+            }
+
             AllFoundParents = AllFoundParents.GroupBy(p => p.ParentId).Select(p => p.Last()).ToList();
             //allfoundparents = list of found parent objects using search params
             return View(AllFoundParents);
         }
+
+        public ActionResult FriendshipRequest(int parentOneId, int parentTwoId)
+        {
+            //Find exsisting friendship between these two Id's
+            var FriendshipRequest = _repo.Friendship.FindByCondition(p => p.ParentOneId == parentOneId);
+            var FriendshipRequestTwo = _repo.Friendship.FindByCondition(p => p.ParentTwoId == parentOneId);
+            var AllParentOneFriends = FriendshipRequest.Concat(FriendshipRequestTwo);
+            var FindOtherParent = AllParentOneFriends.Where(p => p.ParentOneId == parentTwoId);
+            var FindOtherParentTwo = AllParentOneFriends.Where(p => p.ParentTwoId == parentOneId);
+            var Friendship = FindOtherParent.Concat(FindOtherParentTwo).ToList();
+            if (Friendship == null)
+            {
+                Friendship newRequest = new Friendship();
+                newRequest.ParentOneId = parentOneId;
+                newRequest.ParentTwoId = parentTwoId;
+                newRequest.FriendshipRequest = true;
+                newRequest.FriendshipConfirmed = false;
+                
+
+            }return View();
+
+
+            //return DoParentIdsMatch.TrueForAll(ParentOneId.Contains) == ParentTwoId.TrueForAll(DoParentIdsMatch.Contains);
+        }
+
 
         // POST: ParentController/Delete/5
         [HttpPost]
