@@ -66,23 +66,75 @@
         <input type="hidden" asp-for="Parent.IdentityUserId" />
         <input type="hidden" asp-for="Parent.ParentId" />
         <div class="form-group">
-            <label for="name" asp-for="NameSearch">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="First name OR Last name" asp-for="NameSearch">
+            
+                <div class="checkbox">
+                    <label data-toggle="collapse" data-target="#collapseName" aria-expanded="false" aria-controls="collapseName">
+                        <input type="checkbox" /> Search By Name
+                    </label>
+                </div>
+            
+            <div id="collapseName" aria-expanded="false" class="collapse">
+                <label for="name" asp-for="NameSearch">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="First name OR Last name" asp-for="NameSearch">
+            </div>
         </div>
+
         <div class="form-group">
-            <label for="agelow" asp-for="AgeLow">Age (Lower)</label>
-            <input type="number" asp-for="AgeLow" class="form-control" id="agelow" placeholder="Age (Lower Bound)">
+
+            <div class="checkbox">
+                <label data-toggle="collapse" data-target="#collapseAge" aria-expanded="false" aria-controls="collapseAge">
+                    <input type="checkbox" /> Search By Age Range
+                </label>
+            </div>
+
+            <div id="collapseAge" aria-expanded="false" class="collapse">
+                <label for="agelow" asp-for="AgeLow">Age (Lower)</label>
+                <input type="number" asp-for="AgeLow" class="form-control" id="agelow" placeholder="Age (Lower Bound)">
+                <label for="agehigh" asp-for="AgeHigh">Age (Upper)</label>
+                <input type="number" asp-for="AgeHigh" class="form-control" id="agehigh" placeholder="Age (Upper Bound)">
+            </div>
+
         </div>
+
         <div class="form-group">
-            <label for="agehigh" asp-for="AgeHigh">Hager (Upper)</label>
-            <input type="number" asp-for="AgeHigh" class="form-control" id="agehigh" placeholder="Age (Upper Bound)">
+
+            <div class="checkbox">
+                <label data-toggle="collapse" data-target="#collapseZip" aria-expanded="false" aria-controls="collapseZip">
+                    <input type="checkbox" /> Search By Zip Code (Leave Unchecked To Search Locally)
+                </label>
+            </div>
+
+            <div id="collapseZip" aria-expanded="false" class="collapse">
+                <label for="location" asp-for="ZipSearch">Location (Zip Code)</label>
+                <input type="number" asp-for="ZipSearch" class="form-control" id="location" placeholder="#####">
+            </div>
+
         </div>
+
         <div class="form-group">
-            <label for="location" asp-for="ZipSearch">Location (Zip Code)</label>
-            <input type="number" asp-for="ZipSearch" class="form-control" id="location" placeholder="12345">
+
+            <div class="checkbox">
+                <label data-toggle="collapse" data-target="#collapseHealth" aria-expanded="false" aria-controls="collapseHealth">
+                    <input type="checkbox" /> Health & Other Search Parameters
+                </label>
+            </div>
+
+            <div id="collapseHealth" aria-expanded="false" class="collapse">
+                <div class="form-group">
+                    <input type="checkbox" asp-for="ImmunizedSearch" id="immunized" />
+                    <label for="immunized" asp-for="ImmunizedSearch">Immunizations To Date</label>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="wearsmask" asp-for="WearsMaskSearch">Wears a mask</label>
+                    <input type="checkbox" asp-for="WearsMaskSearch" id="wearsmask" />
+                </div>
+            </div>
+
         </div>
+
         <button type="submit" class="btn btn-primary">Search</button>
-    </form>
+</form>
 
 </div>
 <div>

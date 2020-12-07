@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PlayDate_App.Contracts;
 using PlayDate_App.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -128,13 +129,86 @@ namespace PlayDate_App.Controllers
         public ActionResult SearchResults(ParentIndexViewModel parentIndexView)
         {
             var searchingParent = _repo.Parent.GetParent(parentIndexView.Parent.IdentityUserId);
-            //check boxes + text/input boxes
             
-            //first name & last name
-            //use kid params
-            //age range
+            List<Parent> AllFoundParents = new List<Parent>();
+
+
+            //check name input - if not null perform search
+            if (parentIndexView.NameSearch != null)
+            {
+                //search for parents by first name and last name and build a list of distinct results
+                var foundByFirstName = _repo.Parent.FindByCondition(p => p.FirstName.Contains(parentIndexView.NameSearch)).ToList();
+                var foundByLastName = _repo.Parent.FindByCondition(p => p.LastName.Contains(parentIndexView.NameSearch)).ToList();
+                var foundByName = foundByFirstName.Union(foundByLastName).ToList();
+                //add found parents by name to AllFoundParents
+                AllFoundParents.AddRange(foundByName);
+            }
+
             //location
+            if (parentIndexView.ZipSearch != null)
+            {
+                //search for parents by zip location
+                var foundByZip = _repo.Parent.FindByCondition(p => p.LocationZip == parentIndexView.ZipSearch).ToList();
+                AllFoundParents.AddRange(foundByZip);
+            }
+            else
+            {
+                //search locally? - perhaps this is a higher level filter above the rest? 
+            }
             
+            //kid params
+            //age range
+            if (parentIndexView.AgeLow != null || parentIndexView.AgeHigh != null)
+            {
+                List<Parent> foundParentsByKidAges = new List<Parent>();
+                if(parentIndexView.AgeLow != null)
+                {
+                    var foundKidsAboveLower = _repo.Kid.FindByCondition(k => k.Age >= parentIndexView.AgeLow);
+                    foreach(Kid kid in foundKidsAboveLower)
+                    {
+                        var parent = _repo.Parent.GetParentDetails(kid.ParentId);
+                        foundParentsByKidAges.Add(parent);
+                    }
+                }
+                if (parentIndexView.AgeHigh != null)
+                {
+                    var foundKidsBelowUpper = _repo.Kid.FindByCondition(k => k.Age <= parentIndexView.AgeHigh);
+                    foreach (Kid kid in foundKidsBelowUpper)
+                    {
+                        var parent = _repo.Parent.GetParentDetails(kid.ParentId);
+                        foundParentsByKidAges.Add(parent);
+                    }
+                }
+                AllFoundParents.AddRange(foundParentsByKidAges);
+                
+            }
+
+            
+            //health - immunizations
+            if (parentIndexView.ImmunizedSearch == true)
+            {
+                var foundKidsImmunized = _repo.Kid.FindByCondition(k => k.Immunized == true);
+                foreach (Kid kid in foundKidsImmunized)
+                {
+                    var parent = _repo.Parent.GetParentDetails(kid.ParentId);
+                    AllFoundParents.Add(parent);
+                }
+            }
+
+            //health - wears a mask
+            if (parentIndexView.WearsMaskSearch == true)
+            {
+                var foundKidsWearsMask = _repo.Kid.FindByCondition(k => k.WearsMask == true);
+                foreach (Kid kid in foundKidsWearsMask)
+                {
+                    var parent = _repo.Parent.GetParentDetails(kid.ParentId);
+                    AllFoundParents.Add(parent);
+                }
+
+            }
+
+            AllFoundParents = AllFoundParents.GroupBy(p => p.ParentId).Select(p => p.Last()).ToList();
+            //allfoundparents = list of found parent objects using search params
             return View();
         }
 
