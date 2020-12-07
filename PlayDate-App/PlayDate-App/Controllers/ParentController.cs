@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PlayDate_App.Contracts;
 using PlayDate_App.Models;
 using System;
@@ -133,7 +134,7 @@ namespace PlayDate_App.Controllers
             List<Parent> AllFoundParents = new List<Parent>();
 
 
-            //chunk off all of these queries into separate async methodsg?
+            //chunk off all of these queries into separate async methods?
 
             //check name input - if not null perform search
             if (parentIndexView.NameSearch != null)
@@ -213,6 +214,31 @@ namespace PlayDate_App.Controllers
             //allfoundparents = list of found parent objects using search params
             return View();
         }
+
+        public ActionResult FriendshipRequest(int parentOneId, int parentTwoId)
+        {
+            //Find exsisting friendship between these two Id's
+            var FriendshipRequest = _repo.Friendship.FindByCondition(p => p.ParentOneId == parentOneId);
+            var FriendshipRequestTwo = _repo.Friendship.FindByCondition(p => p.ParentTwoId == parentOneId);
+            var AllParentOneFriends = FriendshipRequest.Concat(FriendshipRequestTwo);
+            var FindOtherParent = AllParentOneFriends.Where(p => p.ParentOneId == parentTwoId);
+            var FindOtherParentTwo = AllParentOneFriends.Where(p => p.ParentTwoId == parentOneId);
+            var Friendship = FindOtherParent.Concat(FindOtherParentTwo).ToList();
+            if (Friendship == null)
+            {
+                Friendship newRequest = new Friendship();
+                newRequest.ParentOneId = parentOneId;
+                newRequest.ParentTwoId = parentTwoId;
+                newRequest.FriendshipRequest = true;
+                newRequest.FriendshipConfirmed = false;
+
+
+            }
+
+
+            //return DoParentIdsMatch.TrueForAll(ParentOneId.Contains) == ParentTwoId.TrueForAll(DoParentIdsMatch.Contains);
+        }
+
 
         // POST: ParentController/Delete/5
         [HttpPost]
