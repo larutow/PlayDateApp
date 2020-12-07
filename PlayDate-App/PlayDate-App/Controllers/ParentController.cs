@@ -34,6 +34,8 @@ namespace PlayDate_App.Controllers
 
             ParentIndexViewModel indexViewModel = new ParentIndexViewModel();
             indexViewModel.Parent = parent;
+            var kids = _repo.Kid.FindByCondition(k => k.ParentId == parent.ParentId).ToList();
+            indexViewModel.Kids = kids;
 
             //TODO index view logic - home screen
 
