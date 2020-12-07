@@ -54,6 +54,34 @@ namespace PlayDate_App.Controllers
             return View(parent);
         }
 
+        // GET: ParentController/CreateEvent
+        public ActionResult CreateEvent()
+        {
+            Event playDate = new Event();
+
+            return View(playDate);
+        }
+
+        // POST: ParentController/EventPlayDate
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateEvent(Event playDate)
+        {
+
+            try
+            {
+                _repo.Event.Create(playDate);
+                _repo.Save();
+                return RedirectToAction("Index", "Event");
+            }
+            catch
+            {
+                return View();
+            }
+
+        }
+
+
         //GET : ParentController/AddKid
         public ActionResult AddKid()
         {
@@ -91,6 +119,7 @@ namespace PlayDate_App.Controllers
                 return View();
             }
         }
+
 
         // GET: ParentController/Edit/5
         public ActionResult Edit(int id)

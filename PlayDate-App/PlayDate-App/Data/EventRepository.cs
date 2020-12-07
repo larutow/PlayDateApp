@@ -14,6 +14,8 @@ namespace PlayDate_App.Data
         {
         }
 
+        public Event GetEvent(int id) => FindByCondition(e => e.EventId == id).FirstOrDefault();
 
+        public Event GetEventDetails(int id) => FindByCondition(e => e.EventId == id).FirstOrDefault();
     }
 }

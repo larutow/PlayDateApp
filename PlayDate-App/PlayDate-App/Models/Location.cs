@@ -11,6 +11,7 @@ namespace PlayDate_App.Models
         [Key]
         public int LocationId { get; set; }
         public string Name { get; set; }
+        public string AddressName { get; set; }
         public double Lat { get; set; }
         public double Lng { get; set; }
         public int ThumbsUp { get; set; }

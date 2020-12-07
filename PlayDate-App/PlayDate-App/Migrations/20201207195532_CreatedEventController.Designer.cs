@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlayDate_App.Data;
 
 namespace PlayDate_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201207195532_CreatedEventController")]
+    partial class CreatedEventController
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,8 +50,8 @@ namespace PlayDate_App.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "57e57f25-d969-49be-a088-3155e7718227",
-                            ConcurrencyStamp = "a3e780ee-d90b-451e-8781-91f477d6d7d9",
+                            Id = "9aea44e7-2de0-4f92-b6fd-09aa69019107",
+                            ConcurrencyStamp = "e49b616c-0d7c-4654-8062-22e6cb567832",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });
@@ -353,9 +355,6 @@ namespace PlayDate_App.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AddressName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Lat")
                         .HasColumnType("float");
