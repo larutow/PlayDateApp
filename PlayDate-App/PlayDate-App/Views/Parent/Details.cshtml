@@ -1,4 +1,4 @@
-﻿@model PlayDate_App.Models.Parent
+﻿@model PlayDate_App.Models.ParentDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -26,39 +26,42 @@
         }
     </style>
 </head>
-<h1>The @Model.LastName Family</h1>
+<h1>The @Model.Parent.LastName Family</h1>
 
 <div>
     @*<h4>Parent</h4>*@
     <hr />
     <div class="card">
-        <img src="@Model.ImagePath" alt="Family Photo" style="width:100%">
+        <img src="@Model.Parent.ImagePath" alt="Family Photo" style="width:100%">
         <div class="container">
             <h4><b>Our Profile</b></h4>
             <dl class="row">
                 <dt class="col-sm-6">Parent Names:</dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.FirstName) |
-                    @if(Model.SpouseName != null)
+                    @Html.DisplayFor(model => model.Parent.FirstName) |
+                    @if(Model.Parent.SpouseName != null)
                     {
-                    @Html.DisplayFor(model => model.SpouseName)
+                    @Html.DisplayFor(model => model.Parent.SpouseName)
                     }
                 </dd>
                 <dt class="col-sm-6">Kids:</dt>
                 <dd class="col-sm-10">
-                    This is where kids + their info goes
+                    @foreach (Kid kid in Model.Kids) {
+                    
+                    <div>  @Html.DisplayFor(k => kid.FirstName) <a asp-action="EditKid" asp-route-id="@kid.KidId">Edit Kid</a> |</div>
+                    }
                 </dd>
                 <dt class="col-sm-6">Contact:</dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.EmailAddress)
+                    @Html.DisplayFor(model => model.Parent.EmailAddress)
                 </dd>
                 <dt class="col-sm-6">Location:</dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.LocationZip)
+                    @Html.DisplayFor(model => model.Parent.LocationZip)
                 </dd>
                 <dt class="col-sm-6">Thumbs Up:</dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ThumbsUp)
+                    @Html.DisplayFor(model => model.Parent.ThumbsUp)
                 </dd>
             </dl>
         </div>
@@ -66,7 +69,8 @@
     
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ParentId">Edit</a> |
-    <a asp-action="AddKid" asp-route-id="@Model.ParentId">Add Kid</a> |
+    
+    <a asp-action="Edit" asp-route-id="@Model.Parent.ParentId">Edit</a> |
+    <a asp-action="AddKid" asp-route-id="@Model.Parent.ParentId">Add Kid</a> |
     <a asp-action="Index">Back to Home</a>
 </div>

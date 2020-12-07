@@ -44,8 +44,11 @@ namespace PlayDate_App.Controllers
         public ActionResult Details(int id)
         {
             var parent = _repo.Parent.GetParentDetails(id);
-
-            return View(parent);
+            ParentDetailsViewModel viewmodel = new ParentDetailsViewModel();
+            viewmodel.Parent = parent;
+            var kids = _repo.Kid.FindByCondition(k => k.ParentId == id).ToList();
+            viewmodel.Kids = kids;
+            return View(viewmodel);
         }
 
         // GET: ParentController/Create
@@ -118,6 +121,30 @@ namespace PlayDate_App.Controllers
                 return View();
             }
         }
+        ///   ///    ///   ///
+        public ActionResult EditKid(int id)
+        {
+            var kid = _repo.Kid.FindByCondition(k => k.KidId == id).FirstOrDefault();
+            return View(kid);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditKid(Kid kid)
+        {
+            try
+            {
+                _repo.Kid.Update(kid);
+                _repo.Save();
+                return RedirectToAction ("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        //FirstOrDefault() maybe//
 
         // GET: ParentController/Delete/5
         public ActionResult Delete(int id)
