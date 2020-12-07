@@ -133,6 +133,8 @@ namespace PlayDate_App.Controllers
             List<Parent> AllFoundParents = new List<Parent>();
 
 
+            //chunk off all of these queries into separate async methods?
+
             //check name input - if not null perform search
             if (parentIndexView.NameSearch != null)
             {
