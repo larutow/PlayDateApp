@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 
 #APIKeys
+PlayDate-App/PlayDate-App/APIKeys.cs
