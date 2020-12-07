@@ -56,20 +56,20 @@
                     <dd class="col-sm-10">
                         @Html.DisplayFor(modelParent => parent.ThumbsUp)
                     </dd>
-                    @*<dd class="col-sm-10">
-                        @if (ViewBag.FriendsList.RequestConfimed == false)
+                    <dd class="col-sm-10">
+                        @if (ViewBag.FoundFriends.Contains(parent))
                         {
-                            <button onclick='logictobutton' class='btn btn-danger mt-3 btn-block'>Request Sent</button>
+                            <button onclick='logictobutton' class='btn btn-primary mt-3 btn-block'>Current Friend</button>
                         }
-                        else if (ViewBag.FriendsList.RequestConfimed == null)
+                        else if (ViewBag.FoundRequests.Contains(parent))
                         {
-                            <button onclick='logictobutton' class='btn btn-danger mt-3 btn-block'>Send Request</button>
+                            <button onclick='logictobutton' class='btn btn-secondary mt-3 btn-block'>Request Sent</button>
                         }
                         else
                         {
-                            <button onclick='logictobutton' class='btn btn-danger mt-3 btn-block'>Friends</button>
+                            <button onclick='logictobutton' class='btn btn-danger mt-3 btn-block'>Send Request</button>
                         }
-                    </dd>*@
+                    </dd>
                 </dl>
             </div>
         </div>
