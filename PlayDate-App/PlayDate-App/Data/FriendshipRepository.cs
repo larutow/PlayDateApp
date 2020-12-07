@@ -13,6 +13,8 @@ namespace PlayDate_App.Data
             : base(applicationDbContext)
         {
         }
+        public Friendship GetFriendsOf(int searchingParentId) => FindByCondition(p => p.ParentOneId == searchingParentId).FirstOrDefault();
+
 
 
     }

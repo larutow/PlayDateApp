@@ -219,10 +219,34 @@ namespace PlayDate_App.Controllers
                 AllFoundParents = AllParentsInZip;
             }
 
+            
+
             AllFoundParents = AllFoundParents.GroupBy(p => p.ParentId).Select(p => p.Last()).ToList();
-            //allfoundparents = list of found parent objects using search params
+            var CurrentParentFriendsList = _repo.Friendship.FindByCondition(f => (f.ParentOneId == searchingParent.ParentId || f.ParentTwoId == searchingParent.ParentId) && f.FriendshipConfirmed == true).ToList();
+            var CurrentParentRequestedList = _repo.Friendship.FindByCondition(f => (f.ParentOneId == searchingParent.ParentId || f.ParentTwoId == searchingParent.ParentId) && f.FriendshipRequest == true).ToList();
+            var FoundFriends = FindCurrentFriends(searchingParent.ParentId, AllFoundParents, CurrentParentFriendsList);
+            var FoundRequests = FindCurrentFriends(searchingParent.ParentId, AllFoundParents, CurrentParentRequestedList);
+            ViewBag.FoundFriends = FoundFriends;
             return View(AllFoundParents);
         }
+        private List<Parent> FindCurrentFriends(int searchingParentId, List<Parent> AllFoundParents, List<Friendship> CurrentParentFriendsList)
+        {
+            List<Parent> FoundFriends = new List<Parent>();
+            foreach (var parent in AllFoundParents)
+            {
+                var foundParentId = parent.ParentId;
+                var CurrentParentFriend = _repo.Parent.GetParentDetails(foundParentId);
+                foreach (var relationship in CurrentParentFriendsList)
+                {
+                    if((relationship.ParentOneId == searchingParentId && relationship.ParentTwoId == foundParentId)||(relationship.ParentOneId == foundParentId && relationship.ParentTwoId == searchingParentId))
+                    {
+                        FoundFriends.Add(CurrentParentFriend);
+                    }
+                }
+
+            }
+            return FoundFriends;
+        }  
 
         public ActionResult FriendshipRequest(int parentOneId, int parentTwoId)
         {
