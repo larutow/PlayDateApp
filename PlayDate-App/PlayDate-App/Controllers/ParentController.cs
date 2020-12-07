@@ -129,8 +129,18 @@ namespace PlayDate_App.Controllers
         public ActionResult SearchResults(ParentIndexViewModel parentIndexView)
         {
             var searchingParent = _repo.Parent.GetParent(parentIndexView.Parent.IdentityUserId);
-            
+
+            List<Parent> AllParentsInZip = new List<Parent>();
             List<Parent> AllFoundParents = new List<Parent>();
+            List<Kid> AllFoundKidsInZip = new List<Kid>();
+
+            //default behavior is zip searches for local zip code parents
+            if (parentIndexView.ZipSearch != null)
+            {
+                //search for parents by zip location
+                var foundByZip = _repo.Parent.FindByCondition(p => p.LocationZip == parentIndexView.ZipSearch).ToList();
+                AllFoundParents.AddRange(foundByZip);
+            }
 
 
             //chunk off all of these queries into separate async methodsg?
@@ -139,22 +149,16 @@ namespace PlayDate_App.Controllers
             if (parentIndexView.NameSearch != null)
             {
                 //search for parents by first name and last name and build a list of distinct results
-                var foundByFirstName = _repo.Parent.FindByCondition(p => p.FirstName.Contains(parentIndexView.NameSearch)).ToList();
-                var foundByLastName = _repo.Parent.FindByCondition(p => p.LastName.Contains(parentIndexView.NameSearch)).ToList();
+                var foundByFirstName = AllParentsInZip.Where(p => p.FirstName.Contains(parentIndexView.NameSearch)).ToList();
+                var foundByLastName = AllParentsInZip.Where(p => p.LastName.Contains(parentIndexView.NameSearch)).ToList();
+                
                 var foundByName = foundByFirstName.Union(foundByLastName).ToList();
                 //add found parents by name to AllFoundParents
                 AllFoundParents.AddRange(foundByName);
             }
 
             //location
-            if (parentIndexView.ZipSearch != null)
-            {
-                //search for parents by zip location
-                var foundByZip = _repo.Parent.FindByCondition(p => p.LocationZip == parentIndexView.ZipSearch).ToList();
-                AllFoundParents.AddRange(foundByZip);
-            }
-          
-            
+
             //kid params
             //age range
             if (parentIndexView.AgeLow != null || parentIndexView.AgeHigh != null)
