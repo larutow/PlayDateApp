@@ -153,10 +153,7 @@ namespace PlayDate_App.Controllers
                 var foundByZip = _repo.Parent.FindByCondition(p => p.LocationZip == parentIndexView.ZipSearch).ToList();
                 AllFoundParents.AddRange(foundByZip);
             }
-            else
-            {
-                //search locally? - perhaps this is a higher level filter above the rest? 
-            }
+          
             
             //kid params
             //age range

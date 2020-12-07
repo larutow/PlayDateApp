@@ -106,7 +106,7 @@
 
             <div id="collapseZip" aria-expanded="false" class="collapse">
                 <label for="location" asp-for="ZipSearch">Location (Zip Code)</label>
-                <input type="number" asp-for="ZipSearch" class="form-control" id="location" placeholder="#####">
+                <input type="number" asp-for="ZipSearch" class="form-control" id="location" value="@Model.Parent.LocationZip">
             </div>
 
         </div>
