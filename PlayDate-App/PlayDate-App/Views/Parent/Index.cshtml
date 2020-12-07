@@ -9,136 +9,146 @@
 <div>
     <h4>Parent</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Parent.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Parent.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Parent.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Parent.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Parent.LocationZip)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Parent.LocationZip)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Parent.ImagePath)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Parent.ImagePath)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Parent.EmailAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Parent.EmailAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Parent.Lat)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Parent.Lat)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Parent.Lng)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Parent.Lng)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Parent.ThumbsUp)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Parent.ThumbsUp)
-        </dd>
-    </dl>
+    <div class="row">
+
+        <div class="col-3">
+            <nav class="nav flex-column">
+                <a class="nav-link active" href="#">Home</a>
+                <a class="nav-link" asp-action="Edit" asp-route-id="@Model.Parent.ParentId">Edit Profile</a>
+                <a class="nav-link" href="#">Schedule A Play Date</a>
+                <a class="nav-link" href="#">Family Friends</a>
+                <a class="nav-link" data-toggle="collapse" href="#search" aria-expanded="false" aria-controls="search">Family Search</a>
+                <div class="collapse" id="search">
+
+                    <form asp-action="SearchResults" class="p-3">
+                        <input type="hidden" asp-for="Parent.IdentityUserId" />
+                        <input type="hidden" asp-for="Parent.ParentId" />
+                        <div class="form-group">
+
+                            <div class="checkbox">
+                                <label data-toggle="collapse" data-target="#collapseName" aria-expanded="false" aria-controls="collapseName">
+                                    <input type="checkbox" /> Search By Name
+                                </label>
+                            </div>
+
+                            <div id="collapseName" aria-expanded="false" class="collapse">
+                                <label for="name" asp-for="NameSearch">Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="First name OR Last name" asp-for="NameSearch">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="checkbox">
+                                <label data-toggle="collapse" data-target="#collapseAge" aria-expanded="false" aria-controls="collapseAge">
+                                    <input type="checkbox" /> Search By Age Range
+                                </label>
+                            </div>
+
+                            <div id="collapseAge" aria-expanded="false" class="collapse">
+                                <label for="agelow" asp-for="AgeLow">Age (Lower)</label>
+                                <input type="number" asp-for="AgeLow" class="form-control" id="agelow" placeholder="Age (Lower Bound)">
+                                <label for="agehigh" asp-for="AgeHigh">Age (Upper)</label>
+                                <input type="number" asp-for="AgeHigh" class="form-control" id="agehigh" placeholder="Age (Upper Bound)">
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="checkbox">
+                                <label data-toggle="collapse" data-target="#collapseZip" aria-expanded="false" aria-controls="collapseZip">
+                                    <input type="checkbox" /> Search By Zip Code (Leave Unchecked To Search Locally)
+                                </label>
+                            </div>
+
+                            <div id="collapseZip" aria-expanded="false" class="collapse">
+                                <label for="location" asp-for="ZipSearch">Location (Zip Code)</label>
+                                <input type="number" asp-for="ZipSearch" class="form-control" id="location" value="@Model.Parent.LocationZip">
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <div class="checkbox">
+                                <label data-toggle="collapse" data-target="#collapseHealth" aria-expanded="false" aria-controls="collapseHealth">
+                                    <input type="checkbox" /> Health & Other Search Parameters
+                                </label>
+                            </div>
+
+                            <div id="collapseHealth" aria-expanded="false" class="collapse">
+                                <div class="form-group">
+                                    <input type="checkbox" asp-for="ImmunizedSearch" id="immunized" />
+                                    <label for="immunized" asp-for="ImmunizedSearch">Immunizations To Date</label>
+
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" asp-for="WearsMaskSearch" id="wearsmask" />
+                                    <label for="wearsmask" asp-for="WearsMaskSearch">Wears a mask</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+
+                </div>
+            </nav>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-6">
+            <div class="card">
+                <img src="@Model.Parent.ImagePath" alt="Family Photo" style="width:100%">
+                <div class="container">
+                    <h4><b>The @Model.Parent.LastName Family</b></h4>
+                    <dl class="row">
+                        <dt class="col-sm-6">Parent Names:</dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Parent.FirstName) |
+                            @if (Model.Parent.SpouseName != null)
+                            {
+                                @Html.DisplayFor(model => model.Parent.SpouseName)
+                            }
+                        </dd>
+                        <dt class="col-sm-6">Kids:</dt>
+                        <dd class="col-sm-10">
+                            @foreach (Kid kid in Model.Kids)
+                            {
+
+                                <div>@Html.DisplayFor(k => kid.FirstName) <a asp-action="EditKid" asp-route-id="@kid.KidId">Edit Kid</a></div>
+                            }
+                            <a asp-action="AddKid">Add Kid</a>
+                        </dd>
+                        <dt class="col-sm-6">Contact:</dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Parent.EmailAddress)
+                        </dd>
+                        <dt class="col-sm-6">Location:</dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Parent.LocationZip)
+                        </dd>
+                        <dt class="col-sm-6">Thumbs Up:</dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Parent.ThumbsUp)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-2"></div>
+
+    </div>
+
 </div>
+
 <div>
-    
-    <form asp-action="SearchResults">
-        <input type="hidden" asp-for="Parent.IdentityUserId" />
-        <input type="hidden" asp-for="Parent.ParentId" />
-        <div class="form-group">
-            
-                <div class="checkbox">
-                    <label data-toggle="collapse" data-target="#collapseName" aria-expanded="false" aria-controls="collapseName">
-                        <input type="checkbox" /> Search By Name
-                    </label>
-                </div>
-            
-            <div id="collapseName" aria-expanded="false" class="collapse">
-                <label for="name" asp-for="NameSearch">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="First name OR Last name" asp-for="NameSearch">
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            <div class="checkbox">
-                <label data-toggle="collapse" data-target="#collapseAge" aria-expanded="false" aria-controls="collapseAge">
-                    <input type="checkbox" /> Search By Age Range
-                </label>
-            </div>
-
-            <div id="collapseAge" aria-expanded="false" class="collapse">
-                <label for="agelow" asp-for="AgeLow">Age (Lower)</label>
-                <input type="number" asp-for="AgeLow" class="form-control" id="agelow" placeholder="Age (Lower Bound)">
-                <label for="agehigh" asp-for="AgeHigh">Age (Upper)</label>
-                <input type="number" asp-for="AgeHigh" class="form-control" id="agehigh" placeholder="Age (Upper Bound)">
-            </div>
-
-        </div>
-
-        <div class="form-group">
-
-            <div class="checkbox">
-                <label data-toggle="collapse" data-target="#collapseZip" aria-expanded="false" aria-controls="collapseZip">
-                    <input type="checkbox" /> Search By Zip Code (Leave Unchecked To Search Locally)
-                </label>
-            </div>
-
-            <div id="collapseZip" aria-expanded="false" class="collapse">
-                <label for="location" asp-for="ZipSearch">Location (Zip Code)</label>
-                <input type="number" asp-for="ZipSearch" class="form-control" id="location" value="@Model.Parent.LocationZip">
-            </div>
-
-        </div>
-
-        <div class="form-group">
-
-            <div class="checkbox">
-                <label data-toggle="collapse" data-target="#collapseHealth" aria-expanded="false" aria-controls="collapseHealth">
-                    <input type="checkbox" /> Health & Other Search Parameters
-                </label>
-            </div>
-
-            <div id="collapseHealth" aria-expanded="false" class="collapse">
-                <div class="form-group">
-                    <input type="checkbox" asp-for="ImmunizedSearch" id="immunized" />
-                    <label for="immunized" asp-for="ImmunizedSearch">Immunizations To Date</label>
-                    
-                </div>
-                <div class="form-group">
-                    <input type="checkbox" asp-for="WearsMaskSearch" id="wearsmask" />
-                    <label for="wearsmask" asp-for="WearsMaskSearch">Wears a mask</label>
-                </div>
-            </div>
-
-        </div>
-
-        <button type="submit" class="btn btn-primary">Search</button>
-</form>
-
-</div>
-<div>
+<<<<<<< HEAD
     <a asp-action="Details" asp-route-id="@Model.Parent.ParentId">View Profile</a> |
     <a asp-action="CreateEvent" asp-route-id="@Model.Parent.ParentId">Create A Playdate</a>
+=======
+>>>>>>> update_index_homescreen_page
     @*<a asp-action="Index">Back to List</a>*@
 </div>
