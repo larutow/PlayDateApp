@@ -1,0 +1,70 @@
+﻿@model PlayDate_App.Models.Event
+
+@{
+    ViewData["Title"] = "CreateEvent";
+}
+
+<h1>Create a Playdate</h1>
+
+<h6>Create your event below</h6>
+<hr />
+
+
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateEvent">
+            <input type="hidden" asp-for="EventId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TimeAndDate" class="control-label">Date of Event</label>
+                <input asp-for="TimeAndDate" class="form-control" />
+                <span asp-validation-for="TimeAndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location.Name" class="control-label">Name of Location</label>
+                <input asp-for="Location.Name" class="form-control" />
+                <span asp-validation-for="Location.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location.AddressName" class="control-label">Address</label>
+                <input asp-for="Location.AddressName" class="form-control" />
+                <span asp-validation-for="Location.AddressName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Capacity" class="control-label">Max number of Attendees</label>
+                <input type="number" step="1" asp-for="Capacity" class="form-control" pattern="\d{5}" maxlength="5" style="width: 100px" />
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="ConfirmedEvent" /> @Html.DisplayNameFor(model => model.ConfirmedEvent)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsPrivate" /> @Html.DisplayNameFor(model => model.IsPrivate)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="CreateEvent" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Home</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
