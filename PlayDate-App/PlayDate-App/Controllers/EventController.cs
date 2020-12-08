@@ -23,7 +23,7 @@ namespace PlayDate_App.Controllers
         public ActionResult Index(int id)
         {
           
-            return View();
+            return View(_repo.Event.FindAll());
         }
 
         // GET: EventController/Details/5
