@@ -1,37 +1,59 @@
-﻿@model PlayDate_App.Models.Event
+﻿@model IEnumerable<PlayDate_App.Models.Event>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-
-<h1>List of Events</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New Event</a>
+    <a asp-action="Create">Create New</a>
 </p>
-<table class="table table-hover">
+<table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Location)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.TimeAndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConfirmedEvent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPrivate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Capacity)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
+@foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(model => model.Location)
+                @Html.DisplayFor(modelItem => item.Location.LocationId)
             </td>
             <td>
-                <a asp-action="Edit">Edit</a> |
-                <a asp-action="Details">Details</a> |
-                <a asp-action="Delete">Delete</a>
+                @Html.DisplayFor(modelItem => item.TimeAndDate)
             </td>
-
+            <td>
+                @Html.DisplayFor(modelItem => item.ConfirmedEvent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPrivate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a>
+            </td>
         </tr>
+}
     </tbody>
 </table>
-
