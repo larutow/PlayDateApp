@@ -200,7 +200,7 @@ namespace PlayDate_App.Controllers
             //default behavior is zip searches for local zip code parents
             
             //search for parents by zip location
-            var foundByZip = _repo.Parent.FindByCondition(p => p.LocationZip == parentIndexView.ZipSearch).ToList();
+            var foundByZip = _repo.Parent.FindByCondition(p => p.LocationZip == parentIndexView.ZipSearch && p.ParentId != searchingParent.ParentId).ToList();
             AllParentsInZip.AddRange(foundByZip);
             
 
