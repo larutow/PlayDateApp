@@ -67,6 +67,7 @@ namespace PlayDate_App.Controllers
         public ActionResult CreateEvent()
         {
             Event playDate = new Event();
+            playDate.Location = new Location();
 
             return View(playDate);
         }
@@ -79,6 +80,12 @@ namespace PlayDate_App.Controllers
 
             try
             {
+                var parent = _repo.Parent.GetParent(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                playDate.ParentId = parent.ParentId;
+                playDate.Location.Name = playDate.Location.Name;
+                playDate.Location.AddressName = playDate.Location.AddressName;
+
+
                 _repo.Event.Create(playDate);
                 _repo.Save();
                 return RedirectToAction("Index", "Event");
