@@ -91,7 +91,7 @@ namespace PlayDate_App.Controllers
         public ActionResult CreateEvent()
         {
             Event playDate = new Event();
-            playDate.Location = new Location();
+            playDate.Location = new Models.Location();
 
             return View(playDate);
         }
