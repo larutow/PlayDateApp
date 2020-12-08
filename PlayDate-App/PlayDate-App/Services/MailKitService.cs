@@ -45,7 +45,7 @@ namespace PlayDate_App.Services
             //body subject to change based upon performance & requirements - first attempt includes URL to app to unmade FriendRequests screen
             message.Body = new TextPart("html")
             {
-                Text = $"<h3>New Friend Request<h3><p>The {parentRequester.LastName} would like to be friends on the PlayDateApp.</p><p><a href='https://localhost:44398/Parent/FriendRequests'>Please click here to be view your friend requests to respond to this request</a></p>"
+                Text = $"<h3>New Friend Request<h3><p>The {parentRequester.LastName} family would like to be friends on the PlayDateApp.</p><p><a href='https://localhost:44398/Parent/FriendRequests'>Please click here to be view your friend requests to respond to this request</a></p>"
             };
 
             using (var client = new SmtpClient())

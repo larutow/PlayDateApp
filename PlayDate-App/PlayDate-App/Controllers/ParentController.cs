@@ -331,7 +331,6 @@ namespace PlayDate_App.Controllers
             }
             return FoundFriends;
         }  
-
         public ActionResult FriendshipRequest(int parentTwoId)
         {
             //Find exsisting friendship between these two Id's
@@ -356,7 +355,7 @@ namespace PlayDate_App.Controllers
                 var friendshipId = newRequest.FriendshipId;
                 SendRequest(friendshipId);
             }
-            return View("Details");
+            return RedirectToAction("Index");
         }
 
         public ActionResult ConfrimFriendship(int friendshipId)
