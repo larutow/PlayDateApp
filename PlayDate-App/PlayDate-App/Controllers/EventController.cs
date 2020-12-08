@@ -30,6 +30,7 @@ namespace PlayDate_App.Controllers
         public ActionResult Details(int id)
         {
             var playDate = _repo.Event.GetEvent(id);
+            playDate.Location = _repo.Location.FindByCondition(l => l.LocationId == playDate.LocationId).FirstOrDefault();
 
             return View(playDate);
         }
