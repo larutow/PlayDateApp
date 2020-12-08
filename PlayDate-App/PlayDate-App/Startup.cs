@@ -48,6 +48,7 @@ namespace PlayDate_App
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddTransient<MailKitService>();
+            services.AddTransient<GoogleMapsService>();
             
         }
 

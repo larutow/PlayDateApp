@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,14 +23,15 @@ namespace PlayDate_App.Controllers
         // GET: EventController
         public ActionResult Index(int id)
         {
-          
-            return View(_repo.Event.FindAll());
+            var parent = _repo.Parent.GetParent(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return View(_repo.Event.FindAll().Where(e => e.ParentId == parent.ParentId));
         }
 
         // GET: EventController/Details/5
         public ActionResult Details(int id)
         {
-            var playDate = _repo.Event.GetEvent(id);
+            var playDate = _repo.Event.FindAll().Where(e => e.EventId == id);
 
             return View(playDate);
         }
@@ -38,7 +40,8 @@ namespace PlayDate_App.Controllers
         public ActionResult Create()
         {
             Event playDate = new Event();
-
+            playDate.Location = new Location();
+            
             return View(playDate);
         }
 
@@ -49,6 +52,9 @@ namespace PlayDate_App.Controllers
         {
             try
             {
+                var parent = _repo.Parent.GetParent(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                playDate.ParentId = parent.ParentId;
+
 
                 _repo.Event.Create(playDate);
                 _repo.Save();
