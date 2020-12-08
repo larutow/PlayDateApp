@@ -20,6 +20,8 @@ namespace PlayDate_App.Models
         public bool ConfirmedEvent { get; set; }
         public bool IsPrivate { get; set; }
         public int Capacity { get; set; }
+        [ForeignKey("Parent")]
+        public int ParentId { get; set; }
 
 
     }
