@@ -31,8 +31,8 @@ namespace PlayDate_App.Controllers
         // GET: EventController/Details/5
         public ActionResult Details(int id)
         {
-            var playDate = _repo.Event.FindAll().Where(e => e.EventId == id);
 
+            var playDate = _repo.Event.FindAll().Where(e => e.EventId == id);
             return View(playDate);
         }
 
