@@ -340,7 +340,7 @@ namespace PlayDate_App.Controllers
             var FindOtherParent = AllParentOneFriends.Where(p => p.ParentOneId == parentTwoId);
             var FindOtherParentTwo = AllParentOneFriends.Where(p => p.ParentTwoId == parentOneId);
             var Friendship = FindOtherParent.Concat(FindOtherParentTwo).ToList();
-            if (Friendship == null)
+            if (Friendship.Count == 0)
             {
                 Friendship newRequest = new Friendship();
                 newRequest.ParentOneId = parentOneId;
@@ -350,13 +350,22 @@ namespace PlayDate_App.Controllers
 
                 _repo.Friendship.Create(newRequest);
                 _repo.Save();
-
+                var friendshipId = newRequest.FriendshipId;
+                SendRequest(friendshipId);
             }
-            var parentTwo = _repo.Parent.GetParentDetails(parentTwoId);
-            return View(parentTwo);
+            return View("Details");
+        }
 
+        public ActionResult ConfrimFriendship(int friendshipId)
+        {
+            var confirmFriendship = _repo.Friendship.GetFriendship(friendshipId);
+            confirmFriendship.FriendshipConfirmed = true;
+            return View();
+        }
 
-            //return DoParentIdsMatch.TrueForAll(ParentOneId.Contains) == ParentTwoId.TrueForAll(DoParentIdsMatch.Contains);
+        public void SendRequest(int friendshipId)
+        {
+            
         }
 
 

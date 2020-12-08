@@ -14,7 +14,10 @@
         }
 
         img {
-            border-radius: 5px 5px 0 0;
+            border-radius: 8px 8px 0 0;
+            display: block;
+            width: auto;
+            height: 15rem;
         }
 
     </style>
@@ -43,7 +46,8 @@
                             Thumbs Up: @Html.DisplayFor(modelParent => parent.ThumbsUp)
                         </li>
                         <li class='list-group-item'>
-                            @if (((IList<Parent>)ViewBag.FoundFriends).Contains(parent))
+                            @*@if (((IList<Parent>)ViewBag.FoundFriends).Contains(parent))*@
+                            @if (ViewBag.FoundFriends.Contains(parent))
                             {
                                 <button class='btn btn-primary mt-3 btn-block'>Current Friend</button>
                             }

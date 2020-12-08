@@ -8,7 +8,7 @@ namespace PlayDate_App.Contracts
 {
     public interface IFriendshipRepository : IRepositoryBase<Friendship>
     {
-        Friendship GetFriendsOf(int currentParentId);
+        Friendship GetFriendship(int friendshipId);
     }
 
 }
