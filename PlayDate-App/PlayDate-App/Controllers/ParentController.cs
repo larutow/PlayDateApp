@@ -17,11 +17,13 @@ namespace PlayDate_App.Controllers
     {
         private IRepositoryWrapper _repo;
         private MailKitService _email;
+        private GoogleMapsService _maps;
 
-        public ParentController(IRepositoryWrapper repo, MailKitService mailKitService)
+        public ParentController(IRepositoryWrapper repo, MailKitService mailKitService, GoogleMapsService mapsService)
         {
             _repo = repo;
             _email = mailKitService;
+            _maps = mapsService;
         }
 
         // GET: ParentController

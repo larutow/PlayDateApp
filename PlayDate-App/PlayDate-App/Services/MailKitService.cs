@@ -26,7 +26,7 @@ namespace PlayDate_App.Services
             {
                 client.Connect("smtp.gmail.com", 465, true);
                 //pls no hacko
-                client.Authenticate(APIKeys.ServerEmailAddress, APIKeys.SeverEmailPassword);
+                client.Authenticate(APIKeys.ServerEmailAddress, APIKeys.ServerEmailPassword);
                 //pls dont hack
                 client.Send(message);
                 client.Disconnect(true);
@@ -52,7 +52,7 @@ namespace PlayDate_App.Services
             {
                 client.Connect("smtp.gmail.com", 465, true);
                 //pls no hacko
-                client.Authenticate(APIKeys.ServerEmailAddress, APIKeys.SeverEmailPassword);
+                client.Authenticate(APIKeys.ServerEmailAddress, APIKeys.ServerEmailPassword);
                 //pls dont hack
                 client.Send(message);
                 client.Disconnect(true);
