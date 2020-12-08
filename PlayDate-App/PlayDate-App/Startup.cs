@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using PlayDate_App.ActionFilters;
 using PlayDate_App.Contracts;
 using PlayDate_App.Data;
+using PlayDate_App.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,7 @@ namespace PlayDate_App
             });
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddTransient<MailKitService>();
             
         }
 

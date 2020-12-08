@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlayDate_App.Contracts;
 using PlayDate_App.Models;
+using PlayDate_App.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,12 @@ namespace PlayDate_App.Controllers
     public class ParentController : Controller
     {
         private IRepositoryWrapper _repo;
+        private MailKitService _email;
 
-        public ParentController(IRepositoryWrapper repo)
+        public ParentController(IRepositoryWrapper repo, MailKitService mailKitService)
         {
             _repo = repo;
+            _email = mailKitService;
         }
 
         // GET: ParentController
