@@ -45,13 +45,29 @@
                         <li class='list-group-item'>
                             Thumbs Up: @Html.DisplayFor(modelParent => parent.ThumbsUp)
                         </li>
+                        @*<li class='list-group-item'>
+                            @foreach (var item in ViewBag.FoundFriends)
+                            {
+                                @if (parent.ParentId == item.ParentId)
+                                {
+                                    <button class='btn btn-primary mt-3 btn-block'>Current Friend</button>
+                                }
+                                else if (((IList<Parent>)ViewBag.FoundRequests).Contains(parent))
+                                {
+                                    <button class='btn btn-secondary mt-3 btn-block'>Request Sent</button>
+                                }
+                                else
+                                {
+                                    <a class='btn btn-danger mt-3 btn-block' asp-controller="Parent" asp-action="FriendshipRequest" asp-route-parentTwoId="@parent.ParentId">Send Request</a>
+                                }
+                            }
+                        </li>*@
                         <li class='list-group-item'>
-                            @*@if (((IList<Parent>)ViewBag.FoundFriends).Contains(parent))*@
-                            @if (ViewBag.FoundFriends.Contains(parent))
+                            @if (ViewBag.FoundFriends.Contains(parent.ParentId))
                             {
                                 <button class='btn btn-primary mt-3 btn-block'>Current Friend</button>
                             }
-                            else if (((IList<Parent>)ViewBag.FoundRequests).Contains(parent))
+                            else if (ViewBag.FoundRequests.Contains(parent.ParentId))
                             {
                                 <button class='btn btn-secondary mt-3 btn-block'>Request Sent</button>
                             }

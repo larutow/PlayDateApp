@@ -304,19 +304,19 @@ namespace PlayDate_App.Controllers
             var CurrentParentRequestedList = _repo.Friendship.FindByCondition(f => (f.ParentOneId == searchingParent.ParentId || f.ParentTwoId == searchingParent.ParentId) && f.FriendshipRequest == true && f.FriendshipConfirmed == false).ToList();
             return CurrentParentRequestedList;
         }
-        private List<Parent> FoundFriends(int seachingParentId, List<Parent> AllFoundParents, List<Friendship> CurrentParentFriendsList)
+        private List<int> FoundFriends(int seachingParentId, List<Parent> AllFoundParents, List<Friendship> CurrentParentFriendsList)
         {
             var FoundFriends = FindCurrentFriends(seachingParentId, AllFoundParents, CurrentParentFriendsList);
             return FoundFriends;
         }
-        private List<Parent> FoundRequests(int seachingParentId, List<Parent> AllFoundParents, List<Friendship> CurrentParentRequestedList)
+        private List<int> FoundRequests(int seachingParentId, List<Parent> AllFoundParents, List<Friendship> CurrentParentRequestedList)
         {
             var FoundRequests = FindCurrentFriends(seachingParentId, AllFoundParents, CurrentParentRequestedList);
             return FoundRequests;
         }
-        private List<Parent> FindCurrentFriends(int searchingParentId, List<Parent> AllFoundParents, List<Friendship> ListOfFriendship)
+        private List<int> FindCurrentFriends(int searchingParentId, List<Parent> AllFoundParents, List<Friendship> ListOfFriendship)
         {
-            List<Parent> FoundFriends = new List<Parent>();
+            List<int> FoundFriends = new List<int>();
             foreach (var parent in AllFoundParents)
             {
                 var foundParentId = parent.ParentId;
@@ -325,7 +325,7 @@ namespace PlayDate_App.Controllers
                 {
                     if((relationship.ParentOneId == searchingParentId && relationship.ParentTwoId == foundParentId)||(relationship.ParentOneId == foundParentId && relationship.ParentTwoId == searchingParentId))
                     {
-                        FoundFriends.Add(CurrentParentFriend);
+                        FoundFriends.Add(CurrentParentFriend.ParentId);
                     }
                 }
             }
