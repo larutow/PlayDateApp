@@ -10,8 +10,8 @@ using PlayDate_App.Data;
 namespace PlayDate_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201207213843_Added AddressName to location.cs")]
-    partial class AddedAddressNametolocationcs
+    [Migration("20201208215334_nuke4")]
+    partial class nuke4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,8 +50,8 @@ namespace PlayDate_App.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "57e57f25-d969-49be-a088-3155e7718227",
-                            ConcurrencyStamp = "a3e780ee-d90b-451e-8781-91f477d6d7d9",
+                            Id = "6f62b922-6076-40ba-b858-676858730b8e",
+                            ConcurrencyStamp = "5a5ddb97-1ce1-492d-9a2a-9446501ec5d1",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });
@@ -243,6 +243,9 @@ namespace PlayDate_App.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TimeAndDate")

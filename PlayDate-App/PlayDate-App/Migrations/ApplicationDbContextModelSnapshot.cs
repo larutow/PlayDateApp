@@ -48,8 +48,8 @@ namespace PlayDate_App.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2082b705-419a-4d79-b628-7b45b0f7d45e",
-                            ConcurrencyStamp = "d8b8f6b6-24f9-4eb1-8902-72d0c8b1854b",
+                            Id = "6f62b922-6076-40ba-b858-676858730b8e",
+                            ConcurrencyStamp = "5a5ddb97-1ce1-492d-9a2a-9446501ec5d1",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });

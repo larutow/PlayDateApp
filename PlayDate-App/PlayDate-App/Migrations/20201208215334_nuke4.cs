@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PlayDate_App.Migrations
 {
-    public partial class nuke3 : Migration
+    public partial class nuke4 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -72,6 +72,7 @@ namespace PlayDate_App.Migrations
                     LocationId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
+                    AddressName = table.Column<string>(nullable: true),
                     Lat = table.Column<double>(nullable: false),
                     Lng = table.Column<double>(nullable: false),
                     ThumbsUp = table.Column<int>(nullable: false)
@@ -196,6 +197,7 @@ namespace PlayDate_App.Migrations
                     IdentityUserId = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: true),
+                    SpouseName = table.Column<string>(nullable: true),
                     LocationZip = table.Column<int>(nullable: false),
                     ImagePath = table.Column<string>(nullable: true),
                     EmailAddress = table.Column<string>(nullable: true),
@@ -224,7 +226,8 @@ namespace PlayDate_App.Migrations
                     TimeAndDate = table.Column<DateTime>(nullable: false),
                     ConfirmedEvent = table.Column<bool>(nullable: false),
                     IsPrivate = table.Column<bool>(nullable: false),
-                    Capacity = table.Column<int>(nullable: false)
+                    Capacity = table.Column<int>(nullable: false),
+                    ParentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -297,7 +300,7 @@ namespace PlayDate_App.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "b7387a70-5e23-4917-bf5a-395331044f6b", "95e80ae6-b069-4edd-9a04-6b25e0f4233b", "Parent", "PARENT" });
+                values: new object[] { "6f62b922-6076-40ba-b858-676858730b8e", "5a5ddb97-1ce1-492d-9a2a-9446501ec5d1", "Parent", "PARENT" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
