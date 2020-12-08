@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlayDate_App.Contracts;
+using PlayDate_App.Data.APIData;
 using PlayDate_App.Models;
 using PlayDate_App.Services;
 using System;
@@ -65,6 +66,27 @@ namespace PlayDate_App.Controllers
             return View(parent);
         }
 
+        // POST: ParentController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(Parent parent)
+        {
+            try
+            {
+                parent.IdentityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                GeocodeLocation locationData = await _maps.GetLatLng(parent.LocationZip.ToString());
+                parent.Lat = locationData.results[0].geometry.location.lat;
+                parent.Lng = locationData.results[0].geometry.location.lng;
+                _repo.Parent.Create(parent);
+                _repo.Save();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         // GET: ParentController/CreateEvent
         public ActionResult CreateEvent()
         {
@@ -111,24 +133,6 @@ namespace PlayDate_App.Controllers
             _repo.Save();
             Console.WriteLine(addedkid);
             return RedirectToAction("Index");
-        }
-
-        // POST: ParentController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Parent parent)
-        {
-            try
-            {
-                parent.IdentityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                _repo.Parent.Create(parent);
-                _repo.Save();
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
         }
 
 
