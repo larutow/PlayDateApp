@@ -347,10 +347,13 @@ namespace PlayDate_App.Controllers
                 newRequest.ParentTwoId = parentTwoId;
                 newRequest.FriendshipRequest = true;
                 newRequest.FriendshipConfirmed = false;
-                
+
+                _repo.Friendship.Create(newRequest);
+                _repo.Save();
 
             }
-            return View();
+            var parentTwo = _repo.Parent.GetParentDetails(parentTwoId);
+            return View(parentTwo);
 
 
             //return DoParentIdsMatch.TrueForAll(ParentOneId.Contains) == ParentTwoId.TrueForAll(DoParentIdsMatch.Contains);
