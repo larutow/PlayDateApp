@@ -8,6 +8,9 @@ namespace PlayDate_App.Contracts
 {
     public interface IEventRegistrationRepository : IRepositoryBase<EventRegistration>
     {
+        EventRegistration GetEventRegistration(int id);
+
+        EventRegistration GetEventRegistrationDetails(int id);
 
     }
 }
