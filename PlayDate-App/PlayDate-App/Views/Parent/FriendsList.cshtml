@@ -1,9 +1,136 @@
-﻿@model PlayDate_App.Models.Parent
+﻿@model IEnumerable<PlayDate_App.Models.Parent>
 
 @{
     ViewData["Title"] = "FriendsList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>FriendsList</h1>
+<h1 style="text-align:center">Your Friends List</h1>
+<head>
+    <style>
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
 
+        img {
+            border-radius: 8px 8px 0 0;
+            display: block;
+            width: auto;
+            height: 15rem;
+        }
+    </style>
+</head>
+@if (ViewBag.FriendRequests.Count > 0)
+{
+    <div class="container">
+        <hr />
+        <h4><b>Friend Requests</b></h4>
+        <hr />
+        <div class="row">
+            @foreach (var parent in ViewBag.FriendRequests)
+            {
+                <div class='card m-4' style='width: 20rem;'>
+                    <a class=" text-dark" asp-area="" asp-controller="Parent" asp-route-id="@parent.ParentId" asp-action="Details"><h3><b>@parent.LastName Family</b></h3></a>
+                    <img src="@parent.ImagePath" alt="Family Photo" style="width:100%">
+                    <div class='card-body'>
+                        <h5 class='card-title justify-content-lg-center'><b>Our Profile</b></h5>
+                        <ul class='list-group list-group-flush'>
+                            <li class='list-group-item'>
+                                <b>Parents:</b>
+                                @parent.FirstName <b>|</b>
+                                @if (parent.SpouseName != null)
+                                {
+                                    @parent.SpouseName
+                                }
+                            </li>
+                            <li class='list-group-item'><b>Kids:</b> Kid objects</li>
+                            <li class='list-group-item'>
+                                <b>Thumbs Up:</b> @parent.ThumbsUp
+                            </li>
+                            <li class='list-group-item'>
+                                <a class='btn btn-danger mt-3 btn-block' asp-controller="Parent" asp-action="ConfrimFriendship" asp-route-parentTwoId="@parent.ParentId" onclick="requestSent()">Accept Request</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+<div class="container">
+    <hr />
+    <h4><b>Current Friends</b></h4>
+    <hr />
+    <div class="row">
+        @foreach (var parent in Model)
+        {
+            <div class='card m-4' style='width: 20rem;'>
+                <a class=" text-dark" asp-area="" asp-controller="Parent" asp-route-id="@parent.ParentId" asp-action="Details"><h3><b>@Html.DisplayFor(modelParent => parent.LastName) Family</b></h3></a>
+                <img src="@parent.ImagePath" alt="Family Photo" style="width:100%">
+                <div class='card-body'>
+                    <h5 class='card-title justify-content-lg-center'><b>Our Profile</b></h5>
+                    <ul class='list-group list-group-flush'>
+                        <li class='list-group-item'>
+                            <b>Parents:</b>
+                            @Html.DisplayFor(modelParent => parent.FirstName) <b>|</b>
+                            @if (parent.SpouseName != null)
+                            {
+                                @Html.DisplayFor(modelParent => parent.SpouseName)
+                            }
+                        </li>
+                        <li class='list-group-item'><b>Kids:</b> Kid objects</li>
+                        <li class='list-group-item'>
+                            <b>Thumbs Up:</b> @Html.DisplayFor(modelParent => parent.ThumbsUp)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@if (ViewBag.FriendRequestsSent.Count > 0)
+{
+        <div class="container">
+            <hr />
+            <h4><b>Sent Requests</b></h4>
+            <hr />
+            <div class="row">
+                @foreach (var parent in ViewBag.FriendRequestsSent)
+                {
+                    <div class='card m-4' style='width: 20rem;'>
+                        <a class=" text-dark" asp-area="" asp-controller="Parent" asp-route-id="@parent.ParentId" asp-action="Details"><h3><b>@parent.LastName Family</b></h3></a>
+                        <img src="@parent.ImagePath" alt="Family Photo" style="width:100%">
+                        <div class='card-body'>
+                            <h5 class='card-title justify-content-lg-center'><b>Our Profile</b></h5>
+                            <ul class='list-group list-group-flush'>
+                                <li class='list-group-item'>
+                                    <b>Parents:</b>
+                                    @parent.FirstName <b>|</b>
+                                    @if (parent.SpouseName != null)
+                                    {
+                                        @parent.SpouseName
+                                    }
+                                </li>
+                                <li class='list-group-item'><b>Kids:</b> Kid objects</li>
+                                <li class='list-group-item'>
+                                    <b>Thumbs Up:</b> @parent.ThumbsUp
+                                </li>
+                                <li class='list-group-item'>
+                                    <button class='btn btn-secondary mt-3 btn-block'>Request Sent</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+}
+<script>
+    function requestSent() {
+        alert("\n\n\nThank you for confirming, the Family has been added to your Friends List!")
+    }
+</script>
+@*<div>
+        <a asp-action="Edit" asp-route-id="@parent.ParentId">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>*@
