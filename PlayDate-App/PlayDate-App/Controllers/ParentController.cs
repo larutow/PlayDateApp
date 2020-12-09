@@ -176,10 +176,8 @@ namespace PlayDate_App.Controllers
         public ActionResult SearchResults(ParentIndexViewModel parentIndexView)
         {
             var searchingParent = _repo.Parent.GetParent(parentIndexView.Parent.IdentityUserId);
-
             List<Parent> AllParentsInZip = new List<Parent>();
             List<Kid> AllFoundKidsInZip = new List<Kid>();
-
             List<Parent> AllFoundParents = new List<Parent>();
             
             //default behavior is zip searches for local zip code parents
@@ -414,6 +412,24 @@ namespace PlayDate_App.Controllers
             var confirmFriendship = _repo.Friendship.GetFriendship(friendshipId);
             confirmFriendship.FriendshipConfirmed = true;
             _repo.Friendship.Update(confirmFriendship);
+            _repo.Save();
+            return RedirectToAction("FriendsList");
+        }
+        public ActionResult DeclineFriendship(int parentTwoId)
+        {
+            var parentOneId = GetParentId();
+            var friendshipId = FindFriendshipId(parentOneId, parentTwoId);
+            var DeclineFriendship = _repo.Friendship.GetFriendship(friendshipId);
+            _repo.Friendship.Delete(DeclineFriendship);
+            _repo.Save();
+            return RedirectToAction("FriendsList");
+        }
+        public ActionResult DeleteFriend(int parentTwoId)
+        {
+            var parentOneId = GetParentId();
+            var friendshipId = FindFriendshipId(parentOneId, parentTwoId);
+            var DeclineFriendship = _repo.Friendship.GetFriendship(friendshipId);
+            _repo.Friendship.Delete(DeclineFriendship);
             _repo.Save();
             return RedirectToAction("FriendsList");
         }
