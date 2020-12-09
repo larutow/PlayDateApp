@@ -309,6 +309,11 @@ namespace PlayDate_App.Controllers
             var CurrentParentRequestedList = _repo.Friendship.FindByCondition(f => f.ParentTwoId == searchingParent.ParentId && f.FriendshipRequest == true && f.FriendshipConfirmed == false).ToList();
             return CurrentParentRequestedList;
         }
+        private List<Friendship> CurrentParentRequestSentList(Parent searchingParent)
+        {
+            var CurrentParentRequestedList = _repo.Friendship.FindByCondition(f => f.ParentOneId == searchingParent.ParentId && f.FriendshipRequest == true && f.FriendshipConfirmed == false).ToList();
+            return CurrentParentRequestedList;
+        }
         private List<int> FoundFriends(int seachingParentId, List<Parent> AllFoundParents, List<Friendship> CurrentParentFriendsList)
         {
             var FoundFriends = FindCurrentFriends(seachingParentId, AllFoundParents, CurrentParentFriendsList);
@@ -370,11 +375,17 @@ namespace PlayDate_App.Controllers
             var friendList = FindCurrentFriendObjects(searchingParent.ParentId, GetAllParents(), CurrentParentRequesterList(searchingParent));
             return friendList;
         }
+        private List<Parent> PopulateSentRequestList()
+        {
+            var searchingParent = GetParentObject();
+            var friendList = FindCurrentFriendObjects(searchingParent.ParentId, GetAllParents(), CurrentParentRequestSentList(searchingParent));
+            return friendList;
+        }
         public ActionResult FriendsList()
         {
             var friendList = PopulateFriendList();
             ViewBag.FriendRequests = PopulateFriendRequestList();
-            //var parentsSentRequests = _repo.Friendship.FindByCondition(f => f.ParentOneId == GetParentId() && f.FriendshipRequest == true && f.FriendshipConfirmed == false);
+            ViewBag.FriendRequestsSent = PopulateSentRequestList();
             return View(friendList);
         }
         public ActionResult FriendshipRequest(int parentTwoId)

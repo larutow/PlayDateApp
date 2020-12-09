@@ -85,6 +85,40 @@
         }
     </div>
 </div>
+<div class="container">
+    <hr />
+    <h4><b>Sent Requests</b></h4>
+    <hr />
+    <div class="row">
+        @foreach (var parent in ViewBag.FriendRequestsSent)
+        {
+            <div class='card m-4' style='width: 20rem;'>
+                <a class=" text-dark" asp-area="" asp-controller="Parent" asp-route-id="@parent.ParentId" asp-action="Details"><h3><b>@parent.LastName Family</b></h3></a>
+                <img src="@parent.ImagePath" alt="Family Photo" style="width:100%">
+                <div class='card-body'>
+                    <h5 class='card-title justify-content-lg-center'><b>Our Profile</b></h5>
+                    <ul class='list-group list-group-flush'>
+                        <li class='list-group-item'>
+                            <b>Parents:</b>
+                            @parent.FirstName <b>|</b>
+                            @if (parent.SpouseName != null)
+                            {
+                                @parent.SpouseName
+                            }
+                        </li>
+                        <li class='list-group-item'><b>Kids:</b> Kid objects</li>
+                        <li class='list-group-item'>
+                            <b>Thumbs Up:</b> @parent.ThumbsUp
+                        </li>
+                        <li class='list-group-item'>
+                            <button class='btn btn-secondary mt-3 btn-block'>Request Sent</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 <script>
     function requestSent() {
         alert("\n\n\nThank you for confirming, the Family has been added to your Friends List!")
