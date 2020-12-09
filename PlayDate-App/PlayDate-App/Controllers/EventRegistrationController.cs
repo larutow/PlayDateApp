@@ -72,7 +72,7 @@ namespace PlayDate_App.Controllers
         // POST: EventRegistrationController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(EventRegistration playDate)
+        public ActionResult Create(EventRegistration playDate)
         {
             try
             {

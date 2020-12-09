@@ -1,4 +1,5 @@
-﻿using PlayDate_App.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using PlayDate_App.Contracts;
 using PlayDate_App.Models;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,10 @@ namespace PlayDate_App.Data
         {
         }
 
-        public EventRegistration GetEventRegistration(int id) => FindByCondition(e => e.EventRegistrationId == id).FirstOrDefault();
+        public EventRegistration GetEventRegistration(int id) => FindByCondition(e => e.EventRegistrationId == id).Include("Event").Include("Event.Location").FirstOrDefault();
 
         public EventRegistration GetEventRegistrationDetails(int id) => FindByCondition(e => e.EventRegistrationId == id).FirstOrDefault();
+
 
     }
 }
