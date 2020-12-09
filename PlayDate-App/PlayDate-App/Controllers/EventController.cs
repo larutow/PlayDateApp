@@ -33,6 +33,7 @@ namespace PlayDate_App.Controllers
                     date.Location = new Location();
                     var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == date.LocationId).FirstOrDefault();
                     date.Location.Name = locationTableInfo.Name;
+                    date.Location.AddressName = locationTableInfo.AddressName;
             }
 
             return View(playDates.Where(p => p.ParentId == parent.ParentId));
@@ -46,6 +47,7 @@ namespace PlayDate_App.Controllers
             playDate.Location = new Location();
             var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
             playDate.Location.Name = locationTableInfo.Name;
+            playDate.Location.AddressName = locationTableInfo.AddressName;
             return View(playDate);
         }
 
@@ -70,6 +72,8 @@ namespace PlayDate_App.Controllers
 
                 Location location = new Location();
                 location.Name = playDate.Location.Name;
+                location.AddressName = playDate.Location.AddressName;
+               
 
 
                 _repo.Event.Create(playDate);
@@ -90,7 +94,7 @@ namespace PlayDate_App.Controllers
             playDate.Location = new Location();
             var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
             playDate.Location.Name = locationTableInfo.Name;
-            playDate.Location.LocationId = locationTableInfo.LocationId;
+            playDate.Location.AddressName = locationTableInfo.AddressName;
 
 
             return View(playDate);
@@ -114,6 +118,15 @@ namespace PlayDate_App.Controllers
             }
         }
 
+
+        // GET: EventController/RegisterEvent
+        public ActionResult RegisterEvent()
+        {
+            return RedirectToAction("Create", "EventRegistration");
+        }
+
+
+
         // GET: EventController/Delete/5
         public ActionResult Delete(int id)
         {
@@ -121,8 +134,7 @@ namespace PlayDate_App.Controllers
             playDate.Location = new Location();
             var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
             playDate.Location.Name = locationTableInfo.Name;
-            playDate.Location.LocationId = locationTableInfo.LocationId;
-
+            playDate.Location.AddressName = locationTableInfo.AddressName;
 
             return View(playDate);
         }
