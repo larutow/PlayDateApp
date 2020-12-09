@@ -411,6 +411,15 @@ namespace PlayDate_App.Controllers
             _repo.Save();
             return RedirectToAction("FriendsList");
         }
+        public ActionResult DeclineFriendship(int parentTwoId)
+        {
+            var parentOneId = GetParentId();
+            var friendshipId = FindFriendshipId(parentOneId, parentTwoId);
+            var DeclineFriendship = _repo.Friendship.GetFriendship(friendshipId);
+            _repo.Friendship.Delete(DeclineFriendship);
+            _repo.Save();
+            return RedirectToAction("FriendsList");
+        }
         public int FindFriendshipId(int parentOneId, int parentTwoId)
         {
             var parentOneOnFriendsTable = _repo.Friendship.FindByCondition(p => p.ParentOneId == parentOneId || p.ParentTwoId == parentOneId);
