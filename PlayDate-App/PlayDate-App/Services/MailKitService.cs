@@ -51,9 +51,7 @@ namespace PlayDate_App.Services
             using (var client = new SmtpClient())
             {
                 client.Connect("smtp.gmail.com", 465, true);
-                //pls no hacko
                 client.Authenticate(APIKeys.ServerEmailAddress, APIKeys.ServerEmailPassword);
-                //pls dont hack
                 client.Send(message);
                 client.Disconnect(true);
             }

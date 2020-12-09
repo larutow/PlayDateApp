@@ -378,6 +378,7 @@ namespace PlayDate_App.Controllers
         }
         public ActionResult FriendshipRequest(int parentTwoId)
         {
+            var requestedFriend = _repo.Parent.GetParentDetails(parentTwoId);
             var parentOneId = GetParentId();
             var parentOneOnFriendsTable = _repo.Friendship.FindByCondition(p => p.ParentOneId == parentOneId || p.ParentTwoId == parentOneId);
             var currentFriend = parentOneOnFriendsTable.Where(p => p.ParentOneId == parentTwoId || p.ParentTwoId == parentTwoId).ToList();
@@ -388,6 +389,8 @@ namespace PlayDate_App.Controllers
                 newRequest.ParentTwoId = parentTwoId;
                 newRequest.FriendshipRequest = true;
                 newRequest.FriendshipConfirmed = false;
+                var parentOne = _repo.Parent.GetParentDetails(parentOneId);
+                _email.FriendRequestEmail(parentOne, requestedFriend);
                 _repo.Friendship.Create(newRequest);
                 _repo.Save();
             }
