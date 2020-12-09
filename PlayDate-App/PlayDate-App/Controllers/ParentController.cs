@@ -304,6 +304,11 @@ namespace PlayDate_App.Controllers
             var CurrentParentRequestedList = _repo.Friendship.FindByCondition(f => (f.ParentOneId == searchingParent.ParentId || f.ParentTwoId == searchingParent.ParentId) && f.FriendshipRequest == true && f.FriendshipConfirmed == false).ToList();
             return CurrentParentRequestedList;
         }
+        private List<Friendship> CurrentParentRequesterList(Parent searchingParent)
+        {
+            var CurrentParentRequestedList = _repo.Friendship.FindByCondition(f => f.ParentTwoId == searchingParent.ParentId && f.FriendshipRequest == true && f.FriendshipConfirmed == false).ToList();
+            return CurrentParentRequestedList;
+        }
         private List<int> FoundFriends(int seachingParentId, List<Parent> AllFoundParents, List<Friendship> CurrentParentFriendsList)
         {
             var FoundFriends = FindCurrentFriends(seachingParentId, AllFoundParents, CurrentParentFriendsList);
@@ -362,40 +367,16 @@ namespace PlayDate_App.Controllers
         private List<Parent> PopulateFriendRequestList()
         {
             var searchingParent = GetParentObject();
-            var friendList = FindCurrentFriendObjects(searchingParent.ParentId, GetAllParents(), CurrentParentRequestedList(searchingParent));
+            var friendList = FindCurrentFriendObjects(searchingParent.ParentId, GetAllParents(), CurrentParentRequesterList(searchingParent));
             return friendList;
         }
         public ActionResult FriendsList()
         {
             var friendList = PopulateFriendList();
             ViewBag.FriendRequests = PopulateFriendRequestList();
+            //var parentsSentRequests = _repo.Friendship.FindByCondition(f => f.ParentOneId == GetParentId() && f.FriendshipRequest == true && f.FriendshipConfirmed == false);
             return View(friendList);
         }
-        //public ActionResult FriendshipRequest(int parentTwoId)
-        //{
-        //    //Find exsisting friendship between these two Id's
-        //    var parentOneId = GetParentId();
-        //    var FriendshipRequest = _repo.Friendship.FindByCondition(p => p.ParentOneId == parentOneId);
-        //    var FriendshipRequestTwo = _repo.Friendship.FindByCondition(p => p.ParentTwoId == parentOneId);
-        //    var AllParentOneFriends = FriendshipRequest.Concat(FriendshipRequestTwo);
-        //    var FindOtherParent = AllParentOneFriends.Where(p => p.ParentOneId == parentTwoId);
-        //    var FindOtherParentTwo = AllParentOneFriends.Where(p => p.ParentTwoId == parentOneId);
-        //    var Friendship = FindOtherParent.Concat(FindOtherParentTwo).ToList();
-        //    if (Friendship.Count == 0)
-        //    {
-        //        Friendship newRequest = new Friendship();
-        //        newRequest.ParentOneId = parentOneId;
-        //        newRequest.ParentTwoId = parentTwoId;
-        //        newRequest.FriendshipRequest = true;
-        //        newRequest.FriendshipConfirmed = false;
-
-        //        _repo.Friendship.Create(newRequest);
-        //        _repo.Save();
-        //        var friendshipId = newRequest.FriendshipId;
-        //        SendRequest(friendshipId);
-        //    }
-        //    return RedirectToAction("Index");
-        //}
         public ActionResult FriendshipRequest(int parentTwoId)
         {
             var parentOneId = GetParentId();
