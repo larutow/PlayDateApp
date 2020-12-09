@@ -27,6 +27,7 @@ namespace PlayDate_App.Models
         public double Lat { get; set; }
         public double Lng { get; set; }
         public int ThumbsUp { get; set; }
+        public List<Kid> Kids { get; set; }
 
 
     }
