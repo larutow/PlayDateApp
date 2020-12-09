@@ -1,0 +1,48 @@
+﻿@model PlayDate_App.Models.EventRegistration
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>EventRegistration</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ParentId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ParentId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EventId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EventId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Accepted)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Accepted)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Role)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Role)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ConfirmedAttendance)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ConfirmedAttendance)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.EventRegistrationId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
