@@ -34,16 +34,16 @@
                     <h5 class='card-title justify-content-lg-center'><b>Our Profile</b></h5>
                     <ul class='list-group list-group-flush'>
                         <li class='list-group-item'>
-                            Parents:
-                            @Html.DisplayFor(modelParent => parent.FirstName) |
+                            <b>Parents:</b>
+                            @Html.DisplayFor(modelParent => parent.FirstName) <b>|</b>
                             @if (parent.SpouseName != null)
                             {
                                 @Html.DisplayFor(modelParent => parent.SpouseName)
                             }
                         </li>
-                        <li class='list-group-item'>Kids: @foreach (Kid kid in parent.Kids){<div>Age: @kid.Age | Imm: @kid.Immunized | Mask: @kid.WearsMask </div>}</li>
+                        <li class='list-group-item'><b>Kids:</b> @foreach (Kid kid in parent.Kids){<div>Age: @kid.Age | Imm: @kid.Immunized | Mask: @kid.WearsMask </div>}</li>
                         <li class='list-group-item'>
-                            Thumbs Up: @Html.DisplayFor(modelParent => parent.ThumbsUp)
+                            <b>Thumbs Up:</b> @Html.DisplayFor(modelParent => parent.ThumbsUp)
                         </li>
                         <li class='list-group-item'>
                             @if (ViewBag.FoundFriends.Contains(parent.ParentId))
