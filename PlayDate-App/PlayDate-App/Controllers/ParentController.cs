@@ -459,6 +459,14 @@ public ActionResult FriendshipRequest(int parentTwoId)
             return friendshipId;
         }
 
+        // GET: EventController From Parent Index
+        public ActionResult ViewEvents()
+        {
+            return RedirectToAction("Index", "Event");
+        }
+
+
+
         // POST: ParentController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
