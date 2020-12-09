@@ -18,6 +18,7 @@
             width: auto;
             height: 15rem;
         }
+
     </style>
 </head>
 
@@ -50,8 +51,10 @@
                                 <b>Thumbs Up:</b> @parent.ThumbsUp
                             </li>
                             <li class='list-group-item'>
-                                <a class='btn btn-danger mt-3 btn-block' asp-controller="Parent" asp-action="ConfrimFriendship" asp-route-parentTwoId="@parent.ParentId" onclick="requestSent()">Accept Request</a>
+                                <a class='btn btn-primary mt-3' asp-controller="Parent" asp-action="ConfrimFriendship" asp-route-parentTwoId="@parent.ParentId" onclick="requestSent()">Accept Request</a>
+                                <a class='btn btn-danger mt-3' asp-controller="Parent" asp-action="DeclineFriendship" asp-route-parentTwoId="@parent.ParentId" onclick="declineRequest()">Decline Request</a>
                             </li>
+
                         </ul>
                     </div>
                 </div>
@@ -85,6 +88,9 @@
                         {<div>Age: @kid.Age | Imm: @kid.Immunized | Mask: @kid.WearsMask </div>}</li>*@
                         <li class='list-group-item'>
                             <b>Thumbs Up:</b> @Html.DisplayFor(modelParent => parent.ThumbsUp)
+                        </li>
+                        <li class='list-group-item'>
+                                <a class='btn btn-danger mt-3 btn-block' asp-controller="Parent" asp-action="DeleteFriend" asp-route-parentTwoId="@parent.ParentId" onclick="deleteFriend()">Remove Friend</a>
                         </li>
                     </ul>
                 </div>
@@ -133,6 +139,12 @@
 <script>
     function requestSent() {
         alert("\n\n\nThank you for confirming, the Family has been added to your Friends List!")
+    }
+    function declineRequest() {
+        alert("\n\n\nYou have successfully declined the request")
+    }
+    function deleteFriend() {
+        alert("\n\n\nYou have successfully deleted user from your Friends List")
     }
 </script>
 @*<div>
