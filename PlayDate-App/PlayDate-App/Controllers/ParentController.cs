@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlayDate_App.Contracts;
+using PlayDate_App.Data.APIData;
 using PlayDate_App.Models;
 using PlayDate_App.Services;
 using System;
@@ -17,11 +18,13 @@ namespace PlayDate_App.Controllers
     {
         private IRepositoryWrapper _repo;
         private MailKitService _email;
+        private GoogleMapsService _maps;
 
-        public ParentController(IRepositoryWrapper repo, MailKitService mailKitService)
+        public ParentController(IRepositoryWrapper repo, MailKitService mailKitService, GoogleMapsService mapsService)
         {
             _repo = repo;
             _email = mailKitService;
+            _maps = mapsService;
         }
 
         // GET: ParentController
@@ -100,11 +103,14 @@ namespace PlayDate_App.Controllers
         // POST: ParentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Parent parent)
+        public async Task<ActionResult> Create(Parent parent)
         {
             try
             {
                 parent.IdentityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                GeocodeLocation locationData = await _maps.GetLatLng(parent.LocationZip.ToString());
+                parent.Lat = locationData.results[0].geometry.location.lat;
+                parent.Lng = locationData.results[0].geometry.location.lng;
                 _repo.Parent.Create(parent);
                 _repo.Save();
                 return RedirectToAction("Index");
@@ -177,10 +183,8 @@ namespace PlayDate_App.Controllers
         public ActionResult SearchResults(ParentIndexViewModel parentIndexView)
         {
             var searchingParent = _repo.Parent.GetParent(parentIndexView.Parent.IdentityUserId);
-
             List<Parent> AllParentsInZip = new List<Parent>();
             List<Kid> AllFoundKidsInZip = new List<Kid>();
-
             List<Parent> AllFoundParents = new List<Parent>();
             
             //default behavior is zip searches for local zip code parents
@@ -382,6 +386,7 @@ namespace PlayDate_App.Controllers
 
 public ActionResult FriendshipRequest(int parentTwoId)
         {
+            var requestedFriend = _repo.Parent.GetParentDetails(parentTwoId);
             var parentOneId = GetParentId();
             var parentOneOnFriendsTable = _repo.Friendship.FindByCondition(p => p.ParentOneId == parentOneId || p.ParentTwoId == parentOneId);
             var currentFriend = parentOneOnFriendsTable.Where(p => p.ParentOneId == parentTwoId || p.ParentTwoId == parentTwoId).ToList();
@@ -392,6 +397,8 @@ public ActionResult FriendshipRequest(int parentTwoId)
                 newRequest.ParentTwoId = parentTwoId;
                 newRequest.FriendshipRequest = true;
                 newRequest.FriendshipConfirmed = false;
+                var parentOne = _repo.Parent.GetParentDetails(parentOneId);
+                _email.FriendRequestEmail(parentOne, requestedFriend);
                 _repo.Friendship.Create(newRequest);
                 _repo.Save();
             }
@@ -416,6 +423,24 @@ public ActionResult FriendshipRequest(int parentTwoId)
             var confirmFriendship = _repo.Friendship.GetFriendship(friendshipId);
             confirmFriendship.FriendshipConfirmed = true;
             _repo.Friendship.Update(confirmFriendship);
+            _repo.Save();
+            return RedirectToAction("FriendsList");
+        }
+        public ActionResult DeclineFriendship(int parentTwoId)
+        {
+            var parentOneId = GetParentId();
+            var friendshipId = FindFriendshipId(parentOneId, parentTwoId);
+            var DeclineFriendship = _repo.Friendship.GetFriendship(friendshipId);
+            _repo.Friendship.Delete(DeclineFriendship);
+            _repo.Save();
+            return RedirectToAction("FriendsList");
+        }
+        public ActionResult DeleteFriend(int parentTwoId)
+        {
+            var parentOneId = GetParentId();
+            var friendshipId = FindFriendshipId(parentOneId, parentTwoId);
+            var DeclineFriendship = _repo.Friendship.GetFriendship(friendshipId);
+            _repo.Friendship.Delete(DeclineFriendship);
             _repo.Save();
             return RedirectToAction("FriendsList");
         }

@@ -3,50 +3,75 @@
 @{
     ViewData["Title"] = "Details";
 }
+@{ var mapsApiUrl = "https://maps.googleapis.com/maps/api/js?key="+APIKeys.GoogleApi+"&callback=initMap&libraries=&v=weekly"; }
+@section Scripts{
+
+    <script src="@mapsApiUrl"
+            defer></script>
+    <script>
+        let map;
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: @Model.Location.Lat, lng: @Model.Location.Lng },
+                zoom: 15,
+            });
+            const marker = new google.maps.Marker({
+                position: { lat: @Model.Location.Lat, lng: @Model.Location.Lng },
+                map: map
+            });
+        }
+    </script>
+}
 
 <h1>Event Details</h1>
 
 <div>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Location.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Location.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Location.AddressName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Location.AddressName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TimeAndDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TimeAndDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ConfirmedEvent)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ConfirmedEvent)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsPrivate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsPrivate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Capacity)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Capacity)
-        </dd>
+        <div class="col-4">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Location.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Location.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Location.AddressName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Location.AddressName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TimeAndDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TimeAndDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ConfirmedEvent)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ConfirmedEvent)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.IsPrivate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.IsPrivate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Capacity)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Capacity)
+            </dd>
+        </div>
+        <div class="col-8" id="map" style="height:400px">
+        </div>
     </dl>
 </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.EventId">Edit</a> |
     <a asp-action="Index">Back to List of Events</a>
