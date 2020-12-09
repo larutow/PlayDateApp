@@ -71,21 +71,13 @@ namespace PlayDate_App.Controllers
                 EventRegistration newEventRegistration = new EventRegistration()
                 {
                     EventId = 0,
-<<<<<<< HEAD
                     Event = playDate,
-=======
-                    Event= playDate,
->>>>>>> event_index_from_event_registry
                     ParentId = parent.ParentId,
                     Accepted = true,
                     Role = "Organizer",
                     ConfirmedAttendance = false
                 };
-<<<<<<< HEAD
 
-=======
-                
->>>>>>> event_index_from_event_registry
                 _repo.EventRegistration.Create(newEventRegistration);
                 _repo.Save();
                 return RedirectToAction("Index");
