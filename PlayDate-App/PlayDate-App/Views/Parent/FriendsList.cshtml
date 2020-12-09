@@ -87,9 +87,9 @@
                         <li class='list-group-item'>
                             <b>Thumbs Up:</b> @Html.DisplayFor(modelParent => parent.ThumbsUp)
                         </li>
-                        @*<li class='list-group-item'>
-                                <a class='btn btn-danger mt-3 btn-block' asp-controller="Parent" asp-action="DeclineFriendship" asp-route-parentTwoId="@parent.ParentId" onclick="declineRequest()">Decline Request</a>
-                        </li>*@
+                        <li class='list-group-item'>
+                                <a class='btn btn-danger mt-3 btn-block' asp-controller="Parent" asp-action="DeleteFriend" asp-route-parentTwoId="@parent.ParentId" onclick="deleteFriend()">Remove Friend</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -140,6 +140,9 @@
     }
     function declineRequest() {
         alert("\n\n\nYou have successfully declined the request")
+    }
+    function deleteFriend() {
+        alert("\n\n\nYou have successfully deleted user from your Friends List")
     }
 </script>
 @*<div>
