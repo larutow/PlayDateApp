@@ -66,28 +66,7 @@ namespace PlayDate_App.Controllers
         // GET: ParentController/CreateEvent
         public ActionResult CreateEvent()
         {
-            Event playDate = new Event();
-            playDate.Location = new Models.Location();
-            return View(playDate);
-        }
-
-        // POST: ParentController/EventPlayDate
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateEvent(Event playDate)
-        {
-
-            try
-            {
-                _repo.Event.Create(playDate);
-                _repo.Save();
-                return RedirectToAction("Index", "Event");
-            }
-            catch
-            {
-                return View();
-            }
-
+            return RedirectToAction("Create", "Event");
         }
 
 
