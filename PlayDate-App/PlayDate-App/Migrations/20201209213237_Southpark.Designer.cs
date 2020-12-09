@@ -10,8 +10,8 @@ using PlayDate_App.Data;
 namespace PlayDate_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201208215334_nuke4")]
-    partial class nuke4
+    [Migration("20201209213237_Southpark")]
+    partial class Southpark
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,8 +50,8 @@ namespace PlayDate_App.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6f62b922-6076-40ba-b858-676858730b8e",
-                            ConcurrencyStamp = "5a5ddb97-1ce1-492d-9a2a-9446501ec5d1",
+                            Id = "e2418188-d014-441b-bddc-8177d024dadc",
+                            ConcurrencyStamp = "e063beb6-af60-4b61-abb5-23093391cc2c",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });
@@ -349,6 +349,8 @@ namespace PlayDate_App.Migrations
 
                     b.HasKey("KidId");
 
+                    b.HasIndex("ParentId");
+
                     b.ToTable("Kids");
                 });
 
@@ -510,6 +512,15 @@ namespace PlayDate_App.Migrations
                     b.HasOne("PlayDate_App.Models.Parent", "ParentTwo")
                         .WithMany()
                         .HasForeignKey("ParentTwoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PlayDate_App.Models.Kid", b =>
+                {
+                    b.HasOne("PlayDate_App.Models.Parent", null)
+                        .WithMany("Kids")
+                        .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

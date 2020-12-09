@@ -57,7 +57,7 @@ namespace PlayDate_App.Services
                 client.Send(message);
                 client.Disconnect(true);
             }
-
+           
             //need await
         }
 

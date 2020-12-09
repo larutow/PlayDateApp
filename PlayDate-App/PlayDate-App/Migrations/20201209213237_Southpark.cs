@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PlayDate_App.Migrations
 {
-    public partial class nuke4 : Migration
+    public partial class Southpark : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,25 +44,6 @@ namespace PlayDate_App.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Kids",
-                columns: table => new
-                {
-                    KidId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: false),
-                    Age = table.Column<int>(nullable: false),
-                    Immunized = table.Column<bool>(nullable: false),
-                    WearsMask = table.Column<bool>(nullable: false),
-                    SpecialNeeds = table.Column<bool>(nullable: false),
-                    Notes = table.Column<string>(nullable: true),
-                    ParentId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Kids", x => x.KidId);
                 });
 
             migrationBuilder.CreateTable(
@@ -269,6 +250,31 @@ namespace PlayDate_App.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Kids",
+                columns: table => new
+                {
+                    KidId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(nullable: false),
+                    Age = table.Column<int>(nullable: false),
+                    Immunized = table.Column<bool>(nullable: false),
+                    WearsMask = table.Column<bool>(nullable: false),
+                    SpecialNeeds = table.Column<bool>(nullable: false),
+                    Notes = table.Column<string>(nullable: true),
+                    ParentId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Kids", x => x.KidId);
+                    table.ForeignKey(
+                        name: "FK_Kids_Parents_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Parents",
+                        principalColumn: "ParentId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EventRegistrations",
                 columns: table => new
                 {
@@ -300,7 +306,7 @@ namespace PlayDate_App.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6f62b922-6076-40ba-b858-676858730b8e", "5a5ddb97-1ce1-492d-9a2a-9446501ec5d1", "Parent", "PARENT" });
+                values: new object[] { "e2418188-d014-441b-bddc-8177d024dadc", "e063beb6-af60-4b61-abb5-23093391cc2c", "Parent", "PARENT" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -367,9 +373,42 @@ namespace PlayDate_App.Migrations
                 column: "ParentTwoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Kids_ParentId",
+                table: "Kids",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Parents_IdentityUserId",
                 table: "Parents",
                 column: "IdentityUserId");
+            
+            migrationBuilder.InsertData(
+               table: "Parents",
+               columns: new[] { "ParentId", "EmailAddress", "FirstName", "IdentityUserId", "ImagePath", "LastName", "Lat", "Lng", "LocationZip", "SpouseName", "ThumbsUp" },
+               values: new object[,]
+               {
+                    { 1, null, "Randy", null, "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/047ca3dd-33d4-4aae-bcf6-f7210e19fab9/dbcyg7n-7f14f7e7-54fe-47c9-b1f0-42e1b68220aa.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvMDQ3Y2EzZGQtMzNkNC00YWFlLWJjZjYtZjcyMTBlMTlmYWI5XC9kYmN5ZzduLTdmMTRmN2U3LTU0ZmUtNDdjOS1iMWYwLTQyZTFiNjgyMjBhYS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.-8Y7Up2Et44DckWFefLVB1IGEiF04CIWSJrDEL6j2ZY", "Marsh", 0.0, 0.0, 80420, "Sharon", 0 },
+                    { 2, null, "Sheila", null, "", "Broflovski", 0.0, 0.0, 80420, "Gerald", 0 },
+                    { 3, null, "Liane", null, "", "Cartman", 0.0, 0.0, 80420, "Jack", 0 },
+                    { 4, null, "Stuart", null, "", "McCormick", 0.0, 0.0, 80420, "Carol", 0 },
+                    { 5, null, "Linda", null, "", "Stotch", 0.0, 0.0, 80420, "Stephen", 0 }
+               });
+
+            migrationBuilder.InsertData(
+                table: "Kids",
+                columns: new[] { "KidId", "Age", "FirstName", "Immunized", "Notes", "ParentId", "SpecialNeeds", "WearsMask" },
+                values: new object[,]
+                {
+                    { 1, 10, "Stan", false, "'Oh my god, they killed Kenny!'", 1, false, false },
+                    { 2, 13, "Shelly", false, "She's got huge headgear braces on her teeth, and enjoys using the word 'turds'", 1, false, false },
+                    { 3, 10, "Kyle", false, "Kyle's generally quite calm and patient with those around him... when Cartman isn't involved, anyhow.", 2, false, false },
+                    { 4, 3, "Ike", false, "Ike has had no shortage of adventure and mischief in his life", 2, false, false },
+                    { 5, 10, "Eric", false, "His mother seems to be the sole person he genuinely cares about", 3, false, false },
+                    { 6, 10, "Kenny", false, "'Mrrph rmph rmmph mrrphh!'", 4, false, false },
+                    { 7, 13, "Kevin", false, "He likes frozen waffles and reacts with horror to his brother's deaths", 4, false, false },
+                    { 8, 6, "Karen", false, "Karen is Kenny's rarely-seen little sister", 4, false, false },
+                    { 9, 10, "Leopold 'Butters'", false, "He briefly explored his feminine alter-ego as Marjorine. And he absolutely loves Bennigan's", 5, false, false }
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

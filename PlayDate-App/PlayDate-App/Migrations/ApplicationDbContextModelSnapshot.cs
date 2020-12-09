@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PlayDate_App.Data;
 
 namespace PlayDate_App.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201209001131_add_kids_list_to_parents")]
-    partial class add_kids_list_to_parents
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,8 +48,8 @@ namespace PlayDate_App.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7c1dc554-e82b-4ddb-9b57-375dac04a28d",
-                            ConcurrencyStamp = "e7f301e2-35f3-4097-9f80-d3b65dc7591c",
+                            Id = "07d35063-ee46-4fb5-bdbe-5bd34b98de7f",
+                            ConcurrencyStamp = "4a659c1d-f112-422b-9eee-3878fb14a51c",
                             Name = "Parent",
                             NormalizedName = "PARENT"
                         });
@@ -352,6 +350,107 @@ namespace PlayDate_App.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Kids");
+
+                    b.HasData(
+                        new
+                        {
+                            KidId = 1,
+                            Age = 10,
+                            FirstName = "Stan",
+                            Immunized = false,
+                            Notes = "'Oh my god, they killed Kenny!'",
+                            ParentId = 1,
+                            SpecialNeeds = false,
+                            WearsMask = false
+                        },
+                        new
+                        {
+                            KidId = 2,
+                            Age = 13,
+                            FirstName = "Shelly",
+                            Immunized = false,
+                            Notes = "She's got huge headgear braces on her teeth, and enjoys using the word 'turds'",
+                            ParentId = 1,
+                            SpecialNeeds = false,
+                            WearsMask = false
+                        },
+                        new
+                        {
+                            KidId = 3,
+                            Age = 10,
+                            FirstName = "Kyle",
+                            Immunized = false,
+                            Notes = "Kyle's generally quite calm and patient with those around him... when Cartman isn't involved, anyhow.",
+                            ParentId = 2,
+                            SpecialNeeds = false,
+                            WearsMask = false
+                        },
+                        new
+                        {
+                            KidId = 4,
+                            Age = 3,
+                            FirstName = "Ike",
+                            Immunized = false,
+                            Notes = "Ike has had no shortage of adventure and mischief in his life",
+                            ParentId = 2,
+                            SpecialNeeds = false,
+                            WearsMask = false
+                        },
+                        new
+                        {
+                            KidId = 5,
+                            Age = 10,
+                            FirstName = "Eric",
+                            Immunized = false,
+                            Notes = "His mother seems to be the sole person he genuinely cares about",
+                            ParentId = 3,
+                            SpecialNeeds = false,
+                            WearsMask = false
+                        },
+                        new
+                        {
+                            KidId = 6,
+                            Age = 10,
+                            FirstName = "Kenny",
+                            Immunized = false,
+                            Notes = "'Mrrph rmph rmmph mrrphh!'",
+                            ParentId = 4,
+                            SpecialNeeds = false,
+                            WearsMask = false
+                        },
+                        new
+                        {
+                            KidId = 7,
+                            Age = 13,
+                            FirstName = "Kevin",
+                            Immunized = false,
+                            Notes = "He likes frozen waffles and reacts with horror to his brother's deaths",
+                            ParentId = 4,
+                            SpecialNeeds = false,
+                            WearsMask = false
+                        },
+                        new
+                        {
+                            KidId = 8,
+                            Age = 6,
+                            FirstName = "Karen",
+                            Immunized = false,
+                            Notes = "Karen is Kenny's rarely-seen little sister",
+                            ParentId = 4,
+                            SpecialNeeds = false,
+                            WearsMask = false
+                        },
+                        new
+                        {
+                            KidId = 9,
+                            Age = 10,
+                            FirstName = "Leopold 'Butters'",
+                            Immunized = false,
+                            Notes = "He briefly explored his feminine alter-ego as Marjorine. And he absolutely loves Bennigan's",
+                            ParentId = 5,
+                            SpecialNeeds = false,
+                            WearsMask = false
+                        });
                 });
 
             modelBuilder.Entity("PlayDate_App.Models.Location", b =>
@@ -424,6 +523,68 @@ namespace PlayDate_App.Migrations
                     b.HasIndex("IdentityUserId");
 
                     b.ToTable("Parents");
+
+                    b.HasData(
+                        new
+                        {
+                            ParentId = 1,
+                            FirstName = "Randy",
+                            ImagePath = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/047ca3dd-33d4-4aae-bcf6-f7210e19fab9/dbcyg7n-7f14f7e7-54fe-47c9-b1f0-42e1b68220aa.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvMDQ3Y2EzZGQtMzNkNC00YWFlLWJjZjYtZjcyMTBlMTlmYWI5XC9kYmN5ZzduLTdmMTRmN2U3LTU0ZmUtNDdjOS1iMWYwLTQyZTFiNjgyMjBhYS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.-8Y7Up2Et44DckWFefLVB1IGEiF04CIWSJrDEL6j2ZY",
+                            LastName = "Marsh",
+                            Lat = 0.0,
+                            Lng = 0.0,
+                            LocationZip = 80420,
+                            SpouseName = "Sharon",
+                            ThumbsUp = 0
+                        },
+                        new
+                        {
+                            ParentId = 2,
+                            FirstName = "Sheila",
+                            ImagePath = "",
+                            LastName = "Broflovski",
+                            Lat = 0.0,
+                            Lng = 0.0,
+                            LocationZip = 80420,
+                            SpouseName = "Gerald",
+                            ThumbsUp = 0
+                        },
+                        new
+                        {
+                            ParentId = 3,
+                            FirstName = "Liane",
+                            ImagePath = "",
+                            LastName = "Cartman",
+                            Lat = 0.0,
+                            Lng = 0.0,
+                            LocationZip = 80420,
+                            SpouseName = "Jack",
+                            ThumbsUp = 0
+                        },
+                        new
+                        {
+                            ParentId = 4,
+                            FirstName = "Stuart",
+                            ImagePath = "",
+                            LastName = "McCormick",
+                            Lat = 0.0,
+                            Lng = 0.0,
+                            LocationZip = 80420,
+                            SpouseName = "Carol",
+                            ThumbsUp = 0
+                        },
+                        new
+                        {
+                            ParentId = 5,
+                            FirstName = "Linda",
+                            ImagePath = "",
+                            LastName = "Stotch",
+                            Lat = 0.0,
+                            Lng = 0.0,
+                            LocationZip = 80420,
+                            SpouseName = "Stephen",
+                            ThumbsUp = 0
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -482,7 +643,7 @@ namespace PlayDate_App.Migrations
                     b.HasOne("PlayDate_App.Models.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -491,13 +652,13 @@ namespace PlayDate_App.Migrations
                     b.HasOne("PlayDate_App.Models.Event", "Event")
                         .WithMany()
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PlayDate_App.Models.Parent", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -506,13 +667,13 @@ namespace PlayDate_App.Migrations
                     b.HasOne("PlayDate_App.Models.Parent", "ParentOne")
                         .WithMany()
                         .HasForeignKey("ParentOneId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PlayDate_App.Models.Parent", "ParentTwo")
                         .WithMany()
                         .HasForeignKey("ParentTwoId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -521,7 +682,7 @@ namespace PlayDate_App.Migrations
                     b.HasOne("PlayDate_App.Models.Parent", null)
                         .WithMany("Kids")
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -530,7 +691,7 @@ namespace PlayDate_App.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

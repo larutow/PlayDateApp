@@ -23,6 +23,8 @@ namespace PlayDate_App.Data
             }
 
             base.OnModelCreating(builder);
+
+            
             builder.Entity<IdentityRole>()
             .HasData(
             new IdentityRole
@@ -32,12 +34,19 @@ namespace PlayDate_App.Data
             }
             );
         }
+
+        protected void OnDatabaseCreating(ModelBuilder modelBuilder)
+        {
+           
+        }
+
         public DbSet<Parent> Parents { get; set; }
         public DbSet<Kid> Kids { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventRegistration> EventRegistrations { get; set; }
         public DbSet<Location> Locations { get; set; }
+
 
 
     }

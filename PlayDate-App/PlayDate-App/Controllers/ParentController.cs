@@ -21,6 +21,7 @@ namespace PlayDate_App.Controllers
         public ParentController(IRepositoryWrapper repo, MailKitService mailKitService)
         {
             _repo = repo;
+            var test = _repo.Parent.FindAll().ToList(); 
             _email = mailKitService;
         }
 
