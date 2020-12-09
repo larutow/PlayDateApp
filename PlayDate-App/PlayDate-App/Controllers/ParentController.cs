@@ -384,6 +384,12 @@ namespace PlayDate_App.Controllers
             ViewBag.FriendRequestsSent = PopulateSentRequestList();
             return View(friendList);
         }
+        public ActionResult InviteList()
+        {
+            var friendList = PopulateFriendList();
+            //ViewBag.PendingRequest
+            return View(friendList);
+        }
 
 public ActionResult FriendshipRequest(int parentTwoId)
         {

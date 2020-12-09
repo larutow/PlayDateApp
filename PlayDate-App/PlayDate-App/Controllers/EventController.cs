@@ -79,8 +79,18 @@ namespace PlayDate_App.Controllers
                 GeocodeLocation eventLocationApiCall = await _maps.GetLatLng(playDate.Location.AddressName);
                 playDate.Location.Lat = eventLocationApiCall.results[0].geometry.location.lat;
                 playDate.Location.Lng = eventLocationApiCall.results[0].geometry.location.lng;
-                
-                _repo.Event.Create(playDate);
+
+                EventRegistration newEventRegistration = new EventRegistration()
+                {
+                    EventId = 0,
+                    Event = playDate,
+                    ParentId = parent.ParentId,
+                    Accepted = true,
+                    Role = "Organizer",
+                    ConfirmedAttendance = false
+                };
+
+                _repo.EventRegistration.Create(newEventRegistration);
                 _repo.Save();
                 return RedirectToAction("Index");
             }
@@ -124,11 +134,53 @@ namespace PlayDate_App.Controllers
 
 
         // GET: EventController/RegisterEvent
-        public ActionResult RegisterEvent(int id)
+        //public ActionResult RegisterEvent(int id)
+        //{
+        //    Event registerEvent = new Event();
+        //    registerEvent.EventId = id;
+        //    return RedirectToAction("Create", "EventRegistration", registerEvent);
+        //}
+
+        public ActionResult InviteFriends(int eventId)
         {
-            Event registerEvent = new Event();
-            registerEvent.EventId = id;
-            return RedirectToAction("Create", "EventRegistration", registerEvent);
+
+            return RedirectToAction("InviteList", "Parent", eventId);
+        }
+
+        public ActionResult EventRequest(int parentTwoId)
+        {
+            var requestedFriend = _repo.Parent.GetParentDetails(parentTwoId);
+            var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
+            var findEvent = _repo.Event.FindByCondition(e => e.ParentId == parentOneId).FirstOrDefault();
+            var eventId = findEvent.EventId;
+
+            EventRegistration newEventRegistration = new EventRegistration()
+            {
+                EventId = eventId,
+                ParentId = parentTwoId,
+                Accepted = false,
+                Role = "Attendee",
+                ConfirmedAttendance = false,
+            };
+
+            _repo.EventRegistration.Create(newEventRegistration);
+            _repo.Save();
+            return RedirectToAction("InviteList", "Parent");
+        }
+
+
+        public ActionResult AcceptInvite(int registrationNumber)
+        {
+            var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
+
+            var InvitedEvent = _repo.EventRegistration.GetEventRegistration(registrationNumber);
+
+            InvitedEvent.Accepted = true;
+            _repo.EventRegistration.Update(InvitedEvent);
+            _repo.Save();
+            return RedirectToAction("Event");
         }
 
 
