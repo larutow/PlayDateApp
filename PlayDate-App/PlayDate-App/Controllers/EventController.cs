@@ -48,11 +48,11 @@ namespace PlayDate_App.Controllers
         public ActionResult Details(int id)
         {
 
-            var playDate = _repo.Event.FindAll().Where(e => e.EventId == id).FirstOrDefault();
-            playDate.Location = new Models.Location();
-            var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
-            playDate.Location.Name = locationTableInfo.Name;
-            playDate.Location.AddressName = locationTableInfo.AddressName;
+            var playDate = _repo.Event.GetEvent(id);
+            //playDate.Location = new Models.Location();
+            //var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
+            //playDate.Location.Name = locationTableInfo.Name;
+            //playDate.Location.AddressName = locationTableInfo.AddressName;
             return View(playDate);
         }
 
@@ -75,16 +75,11 @@ namespace PlayDate_App.Controllers
                 var parent = _repo.Parent.GetParent(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 playDate.ParentId = parent.ParentId;
 
-                Models.Location locationModel = new Models.Location();
-                locationModel.Name = playDate.Location.Name;
-                locationModel.AddressName = playDate.Location.AddressName;
-
-                //GeocodeLocation locationData = await _maps.GetLatLng(playDate.Location.AddressName);
-                //playDate.Location.Lat = locationData.results[0].geometry.location.lat;
-                //playDate.Location.Lng = locationData.results[0].geometry.location.lng;
-
-
-
+                //Geocoding below via maps service
+                GeocodeLocation eventLocationApiCall = await _maps.GetLatLng(playDate.Location.AddressName);
+                playDate.Location.Lat = eventLocationApiCall.results[0].geometry.location.lat;
+                playDate.Location.Lng = eventLocationApiCall.results[0].geometry.location.lng;
+                
                 _repo.Event.Create(playDate);
                 _repo.Save();
                 return RedirectToAction("Index");
