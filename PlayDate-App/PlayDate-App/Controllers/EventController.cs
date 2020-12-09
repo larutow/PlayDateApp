@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PlayDate_App.Contracts;
 using PlayDate_App.Data.APIData;
 using PlayDate_App.Models;
@@ -29,19 +30,10 @@ namespace PlayDate_App.Controllers
         // GET: EventController
         public ActionResult Index()
         {
-
-            var playDates = _repo.Event.FindAll().ToList();
             var parent = _repo.Parent.GetParent(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var playDateRegistrations = _repo.EventRegistration.FindByCondition(e => e.ParentId == parent.ParentId).Include("Event.Location").ToList();
+            return View(playDateRegistrations);
 
-            foreach (var date in playDates)
-            {
-                    date.Location = new Models.Location();
-                    var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == date.LocationId).FirstOrDefault();
-                    date.Location.Name = locationTableInfo.Name;
-                    date.Location.AddressName = locationTableInfo.AddressName;
-            }
-
-            return View(playDates.Where(p => p.ParentId == parent.ParentId));
         }
 
         // GET: EventController/Details/5
@@ -49,10 +41,6 @@ namespace PlayDate_App.Controllers
         {
 
             var playDate = _repo.Event.GetEvent(id);
-            //playDate.Location = new Models.Location();
-            //var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
-            //playDate.Location.Name = locationTableInfo.Name;
-            //playDate.Location.AddressName = locationTableInfo.AddressName;
             return View(playDate);
         }
 
@@ -79,8 +67,18 @@ namespace PlayDate_App.Controllers
                 GeocodeLocation eventLocationApiCall = await _maps.GetLatLng(playDate.Location.AddressName);
                 playDate.Location.Lat = eventLocationApiCall.results[0].geometry.location.lat;
                 playDate.Location.Lng = eventLocationApiCall.results[0].geometry.location.lng;
+
+                EventRegistration newEventRegistration = new EventRegistration()
+                {
+                    EventId = 0,
+                    Event= playDate,
+                    ParentId = parent.ParentId,
+                    Accepted = true,
+                    Role = "Organizer",
+                    ConfirmedAttendance = false
+                };
                 
-                _repo.Event.Create(playDate);
+                _repo.EventRegistration.Create(newEventRegistration);
                 _repo.Save();
                 return RedirectToAction("Index");
             }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PlayDate_App.Models.Event>
+﻿@model IEnumerable<PlayDate_App.Models.EventRegistration>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,19 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Location.Name)
+                @Html.DisplayNameFor(model => model.Event.Location.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeAndDate)
+                @Html.DisplayNameFor(model => model.Event.TimeAndDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ConfirmedEvent)
+                @Html.DisplayNameFor(model => model.Event.ConfirmedEvent)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsPrivate)
+                @Html.DisplayNameFor(model => model.Event.IsPrivate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Capacity)
+                @Html.DisplayNameFor(model => model.Event.Capacity)
             </th>
             <th></th>
         </tr>
@@ -34,25 +34,30 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Location.Name)
+                @Html.DisplayFor(modelItem => item.Event.Location.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TimeAndDate)
+                @Html.DisplayFor(modelItem => item.Event.TimeAndDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ConfirmedEvent)
+                @Html.DisplayFor(modelItem => item.Event.ConfirmedEvent)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsPrivate)
+                @Html.DisplayFor(modelItem => item.Event.IsPrivate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
+                @Html.DisplayFor(modelItem => item.Event.Capacity)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a> |
+                @if (item.Event.ParentId == item.ParentId)
+                {
+                    <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a><span> | </span>
+                    <a asp-action="RegisterEvent" asp-route-id="@item.EventId">Register</a><span> | </span>
+                    <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a><span> | </span>
+                }
+
                 <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
-                <a asp-action="RegisterEvent" asp-route-id="@item.EventId">Register</a> |
-                <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a>
+
             </td>
         </tr>
 }
