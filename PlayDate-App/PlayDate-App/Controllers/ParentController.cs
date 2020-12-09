@@ -66,9 +66,16 @@ namespace PlayDate_App.Controllers
         // GET: ParentController/CreateEvent
         public ActionResult CreateEvent()
         {
-            return RedirectToAction("Create", "Event");
+            var friendList = PopulateFriendList();
+            if (friendList.Count == 0)
+            {
+                return RedirectToAction("FriendsList");
+            }
+            else
+            {
+                return RedirectToAction("Create", "Event"); 
+            }
         }
-
 
         //GET : ParentController/AddKid
         public ActionResult AddKid()
@@ -372,7 +379,8 @@ namespace PlayDate_App.Controllers
             ViewBag.FriendRequestsSent = PopulateSentRequestList();
             return View(friendList);
         }
-        public ActionResult FriendshipRequest(int parentTwoId)
+
+public ActionResult FriendshipRequest(int parentTwoId)
         {
             var parentOneId = GetParentId();
             var parentOneOnFriendsTable = _repo.Friendship.FindByCondition(p => p.ParentOneId == parentOneId || p.ParentTwoId == parentOneId);
