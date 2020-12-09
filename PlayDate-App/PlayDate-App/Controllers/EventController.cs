@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlayDate_App.Contracts;
+using PlayDate_App.Data.APIData;
 using PlayDate_App.Models;
+using PlayDate_App.Services;
 
 namespace PlayDate_App.Controllers
 {
@@ -15,10 +17,13 @@ namespace PlayDate_App.Controllers
     {
 
         private IRepositoryWrapper _repo;
+        private GoogleMapsService _maps;
 
-        public EventController(IRepositoryWrapper repo)
+        public EventController(IRepositoryWrapper repo, GoogleMapsService mapsService)
         {
+           
             _repo = repo;
+            _maps = mapsService;
         }
 
         // GET: EventController
@@ -30,7 +35,7 @@ namespace PlayDate_App.Controllers
 
             foreach (var date in playDates)
             {
-                    date.Location = new Location();
+                    date.Location = new Models.Location();
                     var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == date.LocationId).FirstOrDefault();
                     date.Location.Name = locationTableInfo.Name;
                     date.Location.AddressName = locationTableInfo.AddressName;
@@ -44,7 +49,7 @@ namespace PlayDate_App.Controllers
         {
 
             var playDate = _repo.Event.FindAll().Where(e => e.EventId == id).FirstOrDefault();
-            playDate.Location = new Location();
+            playDate.Location = new Models.Location();
             var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
             playDate.Location.Name = locationTableInfo.Name;
             playDate.Location.AddressName = locationTableInfo.AddressName;
@@ -55,7 +60,7 @@ namespace PlayDate_App.Controllers
         public ActionResult Create()
         {
             Event playDate = new Event();
-            playDate.Location = new Location();
+            playDate.Location = new Models.Location();
             
             return View(playDate);
         }
@@ -63,17 +68,21 @@ namespace PlayDate_App.Controllers
         // POST: EventController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Event playDate)
+        public async Task<ActionResult> Create(Event playDate)
         {
             try
             {
                 var parent = _repo.Parent.GetParent(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 playDate.ParentId = parent.ParentId;
 
-                Location location = new Location();
-                location.Name = playDate.Location.Name;
-                location.AddressName = playDate.Location.AddressName;
-               
+                Models.Location locationModel = new Models.Location();
+                locationModel.Name = playDate.Location.Name;
+                locationModel.AddressName = playDate.Location.AddressName;
+
+                //GeocodeLocation locationData = await _maps.GetLatLng(playDate.Location.AddressName);
+                //playDate.Location.Lat = locationData.results[0].geometry.location.lat;
+                //playDate.Location.Lng = locationData.results[0].geometry.location.lng;
+
 
 
                 _repo.Event.Create(playDate);
@@ -91,7 +100,7 @@ namespace PlayDate_App.Controllers
         {
 
             var playDate = _repo.Event.FindAll().Where(e => e.EventId == id).FirstOrDefault();
-            playDate.Location = new Location();
+            playDate.Location = new Models.Location();
             var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
             playDate.Location.Name = locationTableInfo.Name;
             playDate.Location.AddressName = locationTableInfo.AddressName;
@@ -120,9 +129,11 @@ namespace PlayDate_App.Controllers
 
 
         // GET: EventController/RegisterEvent
-        public ActionResult RegisterEvent()
+        public ActionResult RegisterEvent(int id)
         {
-            return RedirectToAction("Create", "EventRegistration");
+            Event registerEvent = new Event();
+            registerEvent.EventId = id;
+            return RedirectToAction("Create", "EventRegistration", registerEvent);
         }
 
 
@@ -131,7 +142,7 @@ namespace PlayDate_App.Controllers
         public ActionResult Delete(int id)
         {
             var playDate = _repo.Event.FindAll().Where(e => e.EventId == id).FirstOrDefault();
-            playDate.Location = new Location();
+            playDate.Location = new Models.Location();
             var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
             playDate.Location.Name = locationTableInfo.Name;
             playDate.Location.AddressName = locationTableInfo.AddressName;
@@ -147,7 +158,7 @@ namespace PlayDate_App.Controllers
             try
             {
                 _repo.Event.Delete(playDate);
-                Location location = new Location();
+                Models.Location location = new Models.Location();
                 location = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
                 _repo.Location.Delete(location);
                 _repo.Save();
