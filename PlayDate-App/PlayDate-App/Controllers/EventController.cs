@@ -147,39 +147,41 @@ namespace PlayDate_App.Controllers
             return RedirectToAction("InviteList", "Parent", eventId);
         }
 
-        //public ActionResult EventRequest(int parentTwoId)
-        //{
-        //    var requestedFriend = _repo.Parent.GetParentDetails(parentTwoId);
-        //    var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
-        //    var currentEvent = _repo.EventRegistration.FindByCondition(e => e.ParentId == parentOneId).FirstOrDefault();
-        //    var eventId = _repo.Event.FindAll().Where(e => e.EventId == currentEvent.EventId).FirstOrDefault();
+        public ActionResult EventRequest(int parentTwoId)
+        {
+            var requestedFriend = _repo.Parent.GetParentDetails(parentTwoId);
+            var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
+            var findEvent = _repo.Event.FindByCondition(e => e.ParentId == parentOneId).FirstOrDefault();
+            var eventId = findEvent.EventId;
 
-        //    //var eventId = currentEvent.EventId;
+            EventRegistration newEventRegistration = new EventRegistration()
+            {
+                EventId = eventId,
+                ParentId = parentTwoId,
+                Accepted = false,
+                Role = "Attendee",
+                ConfirmedAttendance = false,
+            };
+
+            _repo.EventRegistration.Create(newEventRegistration);
+            _repo.Save();
+            return RedirectToAction("InviteList", "Parent");
+        }
 
 
-        //}
-        //public ActionResult FriendshipRequest(int parentTwoId)
-        //{
-        //    var requestedFriend = _repo.Parent.GetParentDetails(parentTwoId);
-        //    var parentOneId = GetParentId();
-        //    var parentOneOnFriendsTable = _repo.Friendship.FindByCondition(p => p.ParentOneId == parentOneId || p.ParentTwoId == parentOneId);
-        //    var currentFriend = parentOneOnFriendsTable.Where(p => p.ParentOneId == parentTwoId || p.ParentTwoId == parentTwoId).ToList();
-        //    if (currentFriend.Count == 0)
-        //    {
-        //        Friendship newRequest = new Friendship();
-        //        newRequest.ParentOneId = parentOneId;
-        //        newRequest.ParentTwoId = parentTwoId;
-        //        newRequest.FriendshipRequest = true;
-        //        newRequest.FriendshipConfirmed = false;
-        //        var parentOne = _repo.Parent.GetParentDetails(parentOneId);
-        //        _email.FriendRequestEmail(parentOne, requestedFriend);
-        //        _repo.Friendship.Create(newRequest);
-        //        _repo.Save();
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+        public ActionResult AcceptInvite(int registrationNumber)
+        {
+            var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
 
+            var InvitedEvent = _repo.EventRegistration.GetEventRegistration(registrationNumber);
+
+            InvitedEvent.Accepted = true;
+            _repo.EventRegistration.Update(InvitedEvent);
+            _repo.Save();
+            return RedirectToAction("Event");
+        }
 
 
 

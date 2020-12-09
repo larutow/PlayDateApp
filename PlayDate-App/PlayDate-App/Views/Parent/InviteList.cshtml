@@ -48,7 +48,7 @@
                             <b>Thumbs Up:</b> @Html.DisplayFor(modelParent => parent.ThumbsUp)
                         </li>
                         <li class='list-group-item'>
-                            <a class='btn btn-danger mt-3 btn-block' asp-controller="Event" asp-action="DeleteFriend" asp-route-parentTwoId="@parent.ParentId" onclick="deleteFriend()">Invite</a>
+                            <a class='btn btn-danger mt-3 btn-block' asp-controller="Event" asp-action="EventRequest" asp-route-parentTwoId="@parent.ParentId">Invite</a>
                         </li>
                     </ul>
                 </div>
