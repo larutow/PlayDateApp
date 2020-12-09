@@ -296,6 +296,11 @@ namespace PlayDate_App.Controllers
             
 
             AllFoundParents = AllFoundParents.GroupBy(p => p.ParentId).Select(p => p.Last()).ToList();
+            foreach(Parent parent in AllFoundParents)
+            {
+                var kidsOfParents = _repo.Kid.FindByCondition(k => k.ParentId == parent.ParentId).ToList();
+                parent.Kids = kidsOfParents;
+            }
             ViewBag.FoundFriends = FoundFriends(searchingParent.ParentId, AllFoundParents, CurrentParentFriendsList(searchingParent));
             ViewBag.FoundRequests = FoundRequests(searchingParent.ParentId, AllFoundParents, CurrentParentRequestedList(searchingParent));
             //var CurrentParentFriendsList = _repo.Friendship.FindByCondition(f => (f.ParentOneId == searchingParent.ParentId || f.ParentTwoId == searchingParent.ParentId) && f.FriendshipConfirmed == true).ToList();
