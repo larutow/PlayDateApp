@@ -19,12 +19,14 @@ namespace PlayDate_App.Controllers
 
         private IRepositoryWrapper _repo;
         private GoogleMapsService _maps;
+        private MailKitService _email;
 
-        public EventController(IRepositoryWrapper repo, GoogleMapsService mapsService)
+        public EventController(IRepositoryWrapper repo, GoogleMapsService mapsService, MailKitService email)
         {
            
             _repo = repo;
             _maps = mapsService;
+            _email = email;
         }
 
         // GET: EventController
@@ -114,8 +116,16 @@ namespace PlayDate_App.Controllers
                 GeocodeLocation eventLocationApiCall = await _maps.GetLatLng(playDate.Location.AddressName);
                 playDate.Location.Lat = eventLocationApiCall.results[0].geometry.location.lat;
                 playDate.Location.Lng = eventLocationApiCall.results[0].geometry.location.lng;
+
                 _repo.Event.Update(playDate);
                 _repo.Save();
+
+                var registrations = _repo.EventRegistration.FindByCondition(e => e.EventId == playDate.EventId).Include("Parent");
+                foreach (EventRegistration registration in registrations)
+                {
+                    _email.EditEvent(registration.Parent, playDate);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             catch
