@@ -23,6 +23,9 @@ namespace PlayDate_App.Models
         [ForeignKey("Parent")]
         public int ParentId { get; set; }
 
-
+        public Event()
+        {
+            TimeAndDate = DateTime.Today.AddHours(12);
+        }
     }
 }
