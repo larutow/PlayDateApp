@@ -207,6 +207,12 @@ namespace PlayDate_App.Controllers
             //var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
 
             var InvitedEvent = _repo.EventRegistration.GetEventRegistration(registrationNumber);
+            var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var decliner = _repo.Parent.GetParent(identityUserId);
+            var eventOwnerId = _repo.EventRegistration.GetEventRegistration(registrationNumber).Event.ParentId;
+            var eventOwner = _repo.Parent.GetParentDetails(eventOwnerId);
+
+            _email.DeclineRequestEmail(decliner, eventOwner);
 
             _repo.EventRegistration.Delete(InvitedEvent);
             _repo.Save();

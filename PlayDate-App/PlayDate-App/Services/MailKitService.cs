@@ -62,27 +62,28 @@ namespace PlayDate_App.Services
             //need await
         }
         
-        public void DeclineRequestEmail(Parent parentRequester, Parent parentRequestee)
+        public void DeclineRequestEmail(Parent decliner, Parent inviter)
         {
-
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("PlayDateApp", APIKeys.ServerEmailAddress));
-            message.To.Add(new MailboxAddress(parentRequestee.FirstName, parentRequestee.EmailAddress));
-            message.Subject = $"PlayDateApp - New Friend Request from the {parentRequester.LastName} family";
-            //body subject to change based upon performance & requirements - first attempt includes URL to app to unmade FriendRequests screen
-            message.Body = new TextPart("html")
+            if (decliner.EmailAddress != null && inviter != null)
             {
-                Text = $"<h3>Declined Request<h3><p>The {parentRequester.LastName} family has declined your invitation to your event.</p>"
-            };
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("PlayDateApp", APIKeys.ServerEmailAddress));
+                message.To.Add(new MailboxAddress(inviter.FirstName, inviter.EmailAddress));
+                message.Subject = $"PlayDateApp - Declined invitation to your event";
+                //body subject to change based upon performance & requirements - first attempt includes URL to app to unmade FriendRequests screen
+                message.Body = new TextPart("html")
+                {
+                    Text = $"<h3>Declined Request<h3><p>The {decliner.LastName} family has declined your invitation to your event.</p>"
+                };
 
-            using (var client = new SmtpClient())
-            {
-                client.Connect("smtp.gmail.com", 465, true);
-                client.Authenticate(APIKeys.ServerEmailAddress, APIKeys.ServerEmailPassword);
-                client.Send(message);
-                client.Disconnect(true);
+                using (var client = new SmtpClient())
+                {
+                    client.Connect("smtp.gmail.com", 465, true);
+                    client.Authenticate(APIKeys.ServerEmailAddress, APIKeys.ServerEmailPassword);
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
             }
-           
             //need await
         }
 
