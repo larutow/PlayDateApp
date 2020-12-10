@@ -130,19 +130,14 @@ namespace PlayDate_App.Controllers
         //    return RedirectToAction("Create", "EventRegistration", registerEvent);
         //}
 
-        public ActionResult InviteFriends(int eventId)
-        {
 
-            return RedirectToAction("InviteList", "Parent", eventId);
-        }
-
-        public ActionResult EventRequest(int parentTwoId)
+        public ActionResult EventRequest(int parentTwoId, int eventId)
         {
-            var requestedFriend = _repo.Parent.GetParentDetails(parentTwoId);
-            var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
-            var findEvent = _repo.Event.FindByCondition(e => e.ParentId == parentOneId).FirstOrDefault();
-            var eventId = findEvent.EventId;
+            //var requestedFriend = _repo.Parent.GetParentDetails(parentTwoId);
+            //var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
+            //var findEvent = _repo.Event.FindByCondition(e => e.ParentId == parentOneId).FirstOrDefault();
+            //var eventId = findEvent.EventId;
 
             EventRegistration newEventRegistration = new EventRegistration()
             {
@@ -161,13 +156,25 @@ namespace PlayDate_App.Controllers
 
         public ActionResult AcceptInvite(int registrationNumber)
         {
-            var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
+            //var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
 
             var InvitedEvent = _repo.EventRegistration.GetEventRegistration(registrationNumber);
 
             InvitedEvent.Accepted = true;
             _repo.EventRegistration.Update(InvitedEvent);
+            _repo.Save();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult DeclineInvite(int registrationNumber)
+        {
+            //var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
+
+            var InvitedEvent = _repo.EventRegistration.GetEventRegistration(registrationNumber);
+
+            _repo.EventRegistration.Delete(InvitedEvent);
             _repo.Save();
             return RedirectToAction("Index");
         }
@@ -191,32 +198,36 @@ namespace PlayDate_App.Controllers
         public ActionResult Delete(int id)
         {
             var playDate = _repo.Event.FindAll().Where(e => e.EventId == id).FirstOrDefault();
-            playDate.Location = new Models.Location();
-            var locationTableInfo = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
-            playDate.Location.Name = locationTableInfo.Name;
-            playDate.Location.AddressName = locationTableInfo.AddressName;
+            var reigstrationsOfGuests = _repo.EventRegistration.FindByCondition(e => e.EventId == id);
+            foreach(var registration in reigstrationsOfGuests)
+            {
+                _repo.EventRegistration.Delete(registration);
+            }
+            _repo.Event.Delete(playDate);
+            _repo.Save();
 
-            return View(playDate);
+            return RedirectToAction("Index");
         }
 
         // POST: EventController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, Event playDate)
-        {
-            try
-            {
-                _repo.Event.Delete(playDate);
-                Models.Location location = new Models.Location();
-                location = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
-                _repo.Location.Delete(location);
-                _repo.Save();
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id)
+        //{
+        //    try
+        //    {
+        //        var playDate = _repo.Event.FindAll().Where(e => e.EventId == id).FirstOrDefault();
+        //        _repo.Event.Delete(playDate);
+        //        Models.Location location = new Models.Location();
+        //        location = _repo.Location.FindAll().Where(l => l.LocationId == playDate.LocationId).FirstOrDefault();
+        //        _repo.Location.Delete(location);
+        //        _repo.Save();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
     }
 }

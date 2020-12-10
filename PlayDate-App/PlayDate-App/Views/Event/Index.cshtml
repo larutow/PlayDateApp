@@ -22,15 +22,12 @@
                     Time And Date
                 </th>
                 <th>
-                    Confirmed Event
-                </th>
-                <th>
                     Is Private
                 </th>
                 <th>
                     Capacity
                 </th>
-                <th></th>
+                
             </tr>
         </thead>
         <tbody>
@@ -39,16 +36,13 @@
                 @if(item.Accepted == false){
                     <tr>
                         <td>
-                            @*@item.Location.Name*@
+                            @item.Event.Location.Name
                         </td>
                         <td>
                             @item.Event.TimeAndDate
                         </td>
                         <td>
-                            @item.Event.ConfirmedEvent
-                        </td>
-                        <td>
-                            @item.Event.IsPrivate
+                            @Html.DisplayFor(modelItem => item.Event.IsPrivate)
                         </td>
                         <td>
                             @item.Event.Capacity
@@ -83,21 +77,18 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Event.Location.Name)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Event.TimeAndDate)
+                Time And Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Event.ConfirmedEvent)
+                Is Private
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Event.IsPrivate)
+                Capacity
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Event.Capacity)
-            </th>
-            <th></th>
+            
         </tr>
     </thead>
     <tbody>
@@ -113,9 +104,6 @@
                         @Html.DisplayFor(modelItem => item.Event.TimeAndDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Event.ConfirmedEvent)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.Event.IsPrivate)
                     </td>
                     <td>
@@ -125,10 +113,13 @@
                         @if (item.Event.ParentId == item.ParentId)
                         {
                             <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a><span> | </span>
-                            <a asp-action="InviteFriends" asp-route-id="@item.EventId">Invite</a><span> | </span>
+                            <a asp-controller="Parent" asp-action="InviteList" asp-route-eventId="@item.EventId">Invite</a><span> | </span>
                             <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a><span> | </span>
                         }
-
+                        @if (item.Event.ParentId != item.ParentId)
+                        {
+                            <a asp-action="DeclineInvite" asp-route-registrationNumber="@item.EventRegistrationId">Cancel</a><span> | </span>
+                        }
                         <a asp-action="Details" asp-route-id="@item.EventId">Details</a>
 
                     </td>

@@ -384,10 +384,17 @@ namespace PlayDate_App.Controllers
             ViewBag.FriendRequestsSent = PopulateSentRequestList();
             return View(friendList);
         }
-        public ActionResult InviteList()
+        public ActionResult InviteList(int eventId)
         {
             var friendList = PopulateFriendList();
-            return View(friendList);
+            InviteListViewModel viewModel = new InviteListViewModel()
+            {
+                FriendsList = friendList,
+                EventId = eventId
+            };
+
+
+            return View(viewModel);
         }
         //private List<Event> PendingRequests()
         //{
