@@ -9,7 +9,68 @@
 <p>
     <a asp-action="Create">Create A New Event</a>
 </p>
+@if (ViewBag.PendingRequest.Count > 0)
+{
+    <h4>Pending Events</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Time And Date
+                </th>
+                <th>
+                    Confirmed Event
+                </th>
+                <th>
+                    Is Private
+                </th>
+                <th>
+                    Capacity
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.PendingRequest)
+            {
+                <tr>
+                    <td>
+                        @*@item.Location.Name*@
+                    </td>
+                    <td>
+                        @item.TimeAndDate
+                    </td>
+                    <td>
+                        @item.ConfirmedEvent
+                    </td>
+                    <td>
+                        @item.IsPrivate
+                    </td>
+                    <td>
+                        @item.Capacity
+                    </td>
+                    @*<td>
+                            @if (item.Event.ParentId == item.ParentId)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a><span> | </span>
+                                <a asp-action="InviteFriends" asp-route-id="@item.EventId">Invite</a><span> | </span>
+                                <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a><span> | </span>
+                            }
+
+                            <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
+
+                        </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
 <table class="table">
+    <h4>Current Events</h4>
     <thead>
         <tr>
             <th>
@@ -31,35 +92,36 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Event.Location.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Event.TimeAndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Event.ConfirmedEvent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Event.IsPrivate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Event.Capacity)
-            </td>
-            <td>
-                @if (item.Event.ParentId == item.ParentId)
-                {
-                    <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a><span> | </span>
-                    <a asp-action="InviteFriends" asp-route-id="@item.EventId">Invite</a><span> | </span> 
-                    <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a><span> | </span>
-                }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Event.Location.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Event.TimeAndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Event.ConfirmedEvent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Event.IsPrivate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Event.Capacity)
+                </td>
+                <td>
+                    @if (item.Event.ParentId == item.ParentId)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a><span> | </span>
+                        <a asp-action="InviteFriends" asp-route-id="@item.EventId">Invite</a><span> | </span>
+                        <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a><span> | </span>
+                    }
 
-                <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
-                
-            </td>
-        </tr>
-}
+                    <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -32,6 +32,7 @@ namespace PlayDate_App.Controllers
         {
             var parent = _repo.Parent.GetParent(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var playDateRegistrations = _repo.EventRegistration.FindByCondition(e => e.ParentId == parent.ParentId).Include("Event.Location").ToList();
+            ViewBag.PendingRequest = PendingRequests();
             return View(playDateRegistrations);
 
         }
@@ -154,7 +155,7 @@ namespace PlayDate_App.Controllers
 
             _repo.EventRegistration.Create(newEventRegistration);
             _repo.Save();
-            return RedirectToAction("InviteList", "Parent");
+            return RedirectToAction("Index", "Event");
         }
 
 
@@ -171,7 +172,20 @@ namespace PlayDate_App.Controllers
             return RedirectToAction("Event");
         }
 
-
+        private List<EventRegistration> PendingRequests()
+        {
+            var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var parentObject = _repo.Parent.GetParent(identityUserId);
+            var PendingEventRequests = _repo.EventRegistration.FindByCondition(e => e.ParentId == parentObject.ParentId && e.Accepted == false).Include("Event").ToList();
+            //List<Event> PendingEvent = new List<Event>();
+            //foreach (var item in PendingEventRequests)
+            //{
+            //    var eventId = item.EventId;
+            //    var currentEvent = _repo.Event.FindByCondition(e => e.EventId == eventId).FirstOrDefault();
+            //    PendingEvent.Add(currentEvent);
+            //}
+            return PendingEventRequests;
+        }
 
         // GET: EventController/Delete/5
         public ActionResult Delete(int id)
