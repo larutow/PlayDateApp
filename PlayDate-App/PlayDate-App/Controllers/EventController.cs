@@ -170,6 +170,27 @@ namespace PlayDate_App.Controllers
             return RedirectToAction("Index");
         }
 
+        //public ActionResult DeclineReason(int parentTwoId, int registrationNumber)
+        //{
+
+        //    var requestedFriend = _repo.Parent.GetParentDetails(parentTwoId);
+        //    var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    var parentOneId = _repo.Parent.GetParent(identityUserId).ParentId;
+        //    var parentOne = _repo.Parent.GetParentDetails(parentOneId);
+        //    _email.DeclineRequestEmail(parentOne, requestedFriend);
+        //    return RedirectToAction("DeclineInvite");
+        //}
+
+        //[HttpPost]
+        //public ActionResult DeclineInvite(int registrationNumber)
+        //{
+        //    var InvitedEvent = _repo.EventRegistration.GetEventRegistration(registrationNumber);
+        //    _repo.EventRegistration.Delete(InvitedEvent);
+        //    _repo.Save();
+        //    return RedirectToAction("Index");
+
+        //}
+
         public ActionResult DeclineInvite(int registrationNumber)
         {
             //var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);

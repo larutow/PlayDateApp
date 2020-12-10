@@ -50,6 +50,7 @@
                         <td>
                             <a asp-action="AcceptInvite" asp-route-registrationNumber="@item.EventRegistrationId">Accept</a><span> | </span>
                             <a asp-action="DeclineInvite" asp-route-registrationNumber="@item.EventRegistrationId">Decline</a><span> | </span>
+                            @*<a asp-action="DeclineReason" asp-route-id="@item.ParentId" asp-route-registrationNumber="@item.EventRegistrationId">Decline</a><span> | </span>*@
                             <a asp-action="Details" asp-route-id="@item.EventId">Details</a>
                         </td>
                         @*<td>
