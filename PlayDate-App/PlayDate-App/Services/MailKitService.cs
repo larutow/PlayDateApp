@@ -73,7 +73,7 @@ namespace PlayDate_App.Services
                 //body subject to change based upon performance & requirements - first attempt includes URL to app to unmade FriendRequests screen
                 message.Body = new TextPart("html")
                 {
-                    Text = $"<h3>Declined Request<h3><p>The {decliner.LastName} family has declined your invitation to your event.</p>"
+                    Text = $"<h3>Declined Request<h3><p>The {decliner.LastName} family has declined your invitation to your event.</p><p>Sorry {inviter.FirstName} I can't make that date!</p>"
                 };
 
                 using (var client = new SmtpClient())
