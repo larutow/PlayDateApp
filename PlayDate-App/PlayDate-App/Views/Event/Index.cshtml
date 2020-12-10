@@ -34,37 +34,46 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in ViewBag.PendingRequest)
+            @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @*@item.Location.Name*@
-                    </td>
-                    <td>
-                        @item.TimeAndDate
-                    </td>
-                    <td>
-                        @item.ConfirmedEvent
-                    </td>
-                    <td>
-                        @item.IsPrivate
-                    </td>
-                    <td>
-                        @item.Capacity
-                    </td>
-                    @*<td>
-                            @if (item.Event.ParentId == item.ParentId)
-                            {
-                                <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a><span> | </span>
-                                <a asp-action="InviteFriends" asp-route-id="@item.EventId">Invite</a><span> | </span>
-                                <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a><span> | </span>
-                            }
+                @if(item.Accepted == false){
+                    <tr>
+                        <td>
+                            @*@item.Location.Name*@
+                        </td>
+                        <td>
+                            @item.Event.TimeAndDate
+                        </td>
+                        <td>
+                            @item.Event.ConfirmedEvent
+                        </td>
+                        <td>
+                            @item.Event.IsPrivate
+                        </td>
+                        <td>
+                            @item.Event.Capacity
+                        </td>
+                        <td>
+                            <a asp-action="AcceptInvite" asp-route-registrationNumber="@item.EventRegistrationId">Accept</a><span> | </span>
+                            <a asp-action="DeclineInvite" asp-route-registrationNumber="@item.EventRegistrationId">Decline</a><span> | </span>
+                            <a asp-action="Details" asp-route-id="@item.EventId">Details</a>
+                        </td>
+                        @*<td>
+                        @if (item.Event.ParentId == item.ParentId)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a><span> | </span>
+                            <a asp-action="InviteFriends" asp-route-id="@item.EventId">Invite</a><span> | </span>
+                            <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a><span> | </span>
+                        }
 
-                            <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
+                        <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
 
-                        </td>*@
-                </tr>
+                    </td>*@
+                    </tr>
+                }
+
             }
+
         </tbody>
     </table>
 
@@ -94,34 +103,38 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event.Location.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event.TimeAndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event.ConfirmedEvent)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event.IsPrivate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event.Capacity)
-                </td>
-                <td>
-                    @if (item.Event.ParentId == item.ParentId)
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a><span> | </span>
-                        <a asp-action="InviteFriends" asp-route-id="@item.EventId">Invite</a><span> | </span>
-                        <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a><span> | </span>
-                    }
+            @if (item.Accepted == true)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Event.Location.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Event.TimeAndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Event.ConfirmedEvent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Event.IsPrivate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Event.Capacity)
+                    </td>
+                    <td>
+                        @if (item.Event.ParentId == item.ParentId)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.EventId">Edit</a><span> | </span>
+                            <a asp-action="InviteFriends" asp-route-id="@item.EventId">Invite</a><span> | </span>
+                            <a asp-action="Delete" asp-route-id="@item.EventId">Delete</a><span> | </span>
+                        }
 
-                    <a asp-action="Details" asp-route-id="@item.EventId">Details</a> |
+                        <a asp-action="Details" asp-route-id="@item.EventId">Details</a>
 
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            }
+
         }
     </tbody>
 </table>

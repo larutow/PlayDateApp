@@ -169,7 +169,7 @@ namespace PlayDate_App.Controllers
             InvitedEvent.Accepted = true;
             _repo.EventRegistration.Update(InvitedEvent);
             _repo.Save();
-            return RedirectToAction("Event");
+            return RedirectToAction("Index");
         }
 
         private List<EventRegistration> PendingRequests()
