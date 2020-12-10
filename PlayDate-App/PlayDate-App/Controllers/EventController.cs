@@ -106,11 +106,14 @@ namespace PlayDate_App.Controllers
         // POST: EventController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Event playDate)
+        public async Task<ActionResult> Edit(Event playDate)
         {
             try
             {
                 playDate.Location.LocationId = playDate.EventId;
+                GeocodeLocation eventLocationApiCall = await _maps.GetLatLng(playDate.Location.AddressName);
+                playDate.Location.Lat = eventLocationApiCall.results[0].geometry.location.lat;
+                playDate.Location.Lng = eventLocationApiCall.results[0].geometry.location.lng;
                 _repo.Event.Update(playDate);
                 _repo.Save();
                 return RedirectToAction(nameof(Index));
