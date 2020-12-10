@@ -32,7 +32,7 @@
             @foreach (var parent in ViewBag.FriendRequests)
             {
                 <div class='card m-4' style='width: 20rem;'>
-                    <a class=" text-dark" asp-area="" asp-controller="Parent" asp-route-id="@parent.ParentId" asp-action="Details"><h3><b>@parent.LastName Family</b></h3></a>
+                    <a class="text-dark" asp-area="" asp-controller="Parent" asp-route-id="@parent.ParentId" asp-action="Details"><h3 class="text-center m-2"><b>@parent.LastName Family</b></h3></a>
                     <img src="@parent.ImagePath" alt="Family Photo" style="width:100%">
                     <div class='card-body'>
                         <h5 class='card-title justify-content-lg-center'><b>Our Profile</b></h5>
@@ -51,8 +51,8 @@
                                 <b>Thumbs Up:</b> @parent.ThumbsUp
                             </li>
                             <li class='list-group-item'>
-                                <a class='btn btn-primary mt-3' asp-controller="Parent" asp-action="ConfrimFriendship" asp-route-parentTwoId="@parent.ParentId" onclick="requestSent()">Accept Request</a>
-                                <a class='btn btn-danger mt-3' asp-controller="Parent" asp-action="DeclineFriendship" asp-route-parentTwoId="@parent.ParentId" onclick="declineRequest()">Decline Request</a>
+                                <a class='btn btn-primary btn-block mt-3' asp-controller="Parent" asp-action="ConfrimFriendship" asp-route-parentTwoId="@parent.ParentId" onclick="requestSent()">Accept Request</a>
+                                <a class='btn btn-danger btn-block mt-3' asp-controller="Parent" asp-action="DeclineFriendship" asp-route-parentTwoId="@parent.ParentId" onclick="declineRequest()">Decline Request</a>
                             </li>
 
                         </ul>
