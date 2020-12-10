@@ -387,11 +387,23 @@ namespace PlayDate_App.Controllers
         public ActionResult InviteList()
         {
             var friendList = PopulateFriendList();
-            //ViewBag.PendingRequest
             return View(friendList);
         }
+        //private List<Event> PendingRequests()
+        //{
+        //    var searchingParent = GetParentObject();
+        //    var PendingEventRequests = _repo.EventRegistration.FindByCondition(e => e.ParentId == searchingParent.ParentId && e.Accepted == false).ToList();
+        //    List<Event> PendingEvent = new List<Event>();
+        //    foreach (var item in PendingEventRequests)
+        //    {
+        //        var eventId = item.EventId;
+        //        var currentEvent = _repo.Event.FindByCondition(e => e.EventId == eventId).FirstOrDefault();
+        //        PendingEvent.Add(currentEvent);
+        //    }
+        //    return PendingEvent;
+        //}
 
-public ActionResult FriendshipRequest(int parentTwoId)
+        public ActionResult FriendshipRequest(int parentTwoId)
         {
             var requestedFriend = _repo.Parent.GetParentDetails(parentTwoId);
             var parentOneId = GetParentId();
